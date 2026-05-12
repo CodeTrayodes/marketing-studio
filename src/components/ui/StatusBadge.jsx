@@ -5,7 +5,7 @@ export function StatusBadge({ status, className }) {
 
   return (
     <span className={cn(
-      'badge border text-xs font-medium',
+      'badge border text-[10px] font-medium',
       config.color,
       config.bg,
       config.border,

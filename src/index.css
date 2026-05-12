@@ -29,7 +29,7 @@
     background-color: #F8F9FA;
     color: #0A0A0A;
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.5;
   }
 
@@ -83,18 +83,18 @@
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-badge text-xs font-medium;
+    @apply inline-flex items-center gap-1 px-1.5 py-px rounded-badge text-[10px] font-medium;
   }
 
   .btn-primary {
-    @apply bg-brand-green text-white px-4 py-2 rounded-btn text-sm font-medium
+    @apply bg-brand-green text-white px-3 py-1.5 rounded-btn text-xs font-medium
            hover:bg-brand-green-dark transition-colors duration-200
            active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-brand-green focus-visible:ring-offset-2;
   }
 
   .btn-secondary {
-    @apply bg-surface-muted text-ink border border-border px-4 py-2 rounded-btn text-sm font-medium
+    @apply bg-surface-muted text-ink border border-border px-3 py-1.5 rounded-btn text-xs font-medium
            hover:bg-surface-subtle transition-colors duration-200
            active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-ink focus-visible:ring-offset-2;

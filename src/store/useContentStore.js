@@ -51,6 +51,12 @@ export const useContentStore = create((set, get) => ({
     return result;
   },
 
+  approveAsset: (id) =>
+    set(s => ({ assets: s.assets.map(a => a.id === id ? { ...a, status: 'approved' } : a) })),
+
+  reviseAsset: (id, note) =>
+    set(s => ({ assets: s.assets.map(a => a.id === id ? { ...a, status: 'draft', revisionNote: note } : a) })),
+
   getStats: () => {
     const assets = get().assets;
     return {

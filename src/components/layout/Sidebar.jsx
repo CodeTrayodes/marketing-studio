@@ -2,9 +2,9 @@ import { NavLink } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { useAppStore, ROLE_CONFIG } from '../../store/useAppStore';
 import { useAgentStore } from '../../store/useAgentStore';
+import { RoleSwitcher } from '../ui/RoleSwitcher';
 import {
   LayoutDashboard, GitBranch, FileText, Shield, BarChart3, Settings,
-  ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,22 +17,21 @@ const NAV_ITEMS = [
   { path: '/settings', label: 'Settings', icon: Settings },
 ];
 
-const USER = {
-  name: 'Pranjal Gaikwad',
-  email: 'pranjal_g@levelshift.com',
-  initials: 'PG',
-};
-
-export function Sidebar() {
-  const { role, sidebarCollapsed, toggleSidebar } = useAppStore();
+export function Sidebar({ mobileOpen, onClose }) {
+  const { role, sidebarCollapsed } = useAppStore();
   const runningCount = useAgentStore((s) => s.getRunningCount());
   const roleConfig = ROLE_CONFIG[role];
 
   return (
     <aside className={cn(
       'flex flex-col bg-white dark:bg-dark-card border-r border-border dark:border-dark-border',
-      'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex-shrink-0 z-20',
-      sidebarCollapsed ? 'w-12' : 'w-48'
+      'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex-shrink-0 z-40',
+      // Mobile: fixed overlay; Desktop: in-flow
+      'fixed inset-y-0 left-0 md:relative md:inset-auto',
+      // Width
+      sidebarCollapsed ? 'w-12' : 'w-48',
+      // Mobile slide in/out
+      mobileOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full md:translate-x-0',
     )}>
 
       {/* Logo */}
@@ -40,7 +39,9 @@ export function Sidebar() {
         'flex items-center border-b border-border dark:border-dark-border h-10 flex-shrink-0',
         sidebarCollapsed ? 'justify-center' : 'px-3 gap-2'
       )}>
-        
+        <div className="w-5 h-5 rounded-[4px] bg-brand-green flex items-center justify-center flex-shrink-0">
+          <span className="text-white text-[10px] font-bold leading-none">P</span>
+        </div>
         <AnimatePresence>
           {!sidebarCollapsed && (
             <motion.div
@@ -68,6 +69,7 @@ export function Sidebar() {
               key={item.path}
               to={item.path}
               end={item.exact}
+              onClick={onClose}
               className={({ isActive }) => cn(
                 'flex items-center gap-2 mx-1.5 px-2 py-1.5 rounded-[6px] text-[11px] transition-all duration-150',
                 'hover:bg-surface-muted dark:hover:bg-dark-border',
@@ -102,55 +104,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom: system + user + collapse */}
+      {/* Bottom: role switcher */}
       <div className="border-t border-border dark:border-dark-border">
-
-        {/* User profile */}
-        <div className={cn(
-          'flex items-center gap-2 px-2 py-4 border-b border-border dark:border-dark-border',
-          sidebarCollapsed && 'justify-center'
-        )}>
-          <div className="w-6 h-6 rounded-full bg-brand-green/15 border border-brand-green/30 flex items-center justify-center flex-shrink-0">
-            <span className="text-[8px] font-bold text-brand-green">{USER.initials}</span>
-          </div>
-          <AnimatePresence>
-            {!sidebarCollapsed && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="min-w-0"
-              >
-                <p className="text-[10px] font-medium text-ink dark:text-white truncate leading-tight">{USER.name}</p>
-                <p className="text-[9px] text-ink-faint dark:text-gray-500 truncate leading-tight">{USER.email}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* System health */}
-        {/* {!sidebarCollapsed && (
-          <div className="px-3 py-1.5">
-            <div className="flex items-center justify-between mb-0.5">
-              <span className="text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider">System</span>
-              <span className="text-[9px] font-mono-nums text-brand-green font-semibold">
-                {useAgentStore.getState().systemHealth.toFixed(1)}%
-              </span>
-            </div>
-            <div className="w-full h-px bg-border dark:bg-dark-border rounded-full overflow-hidden">
-              <div className="h-full bg-brand-green rounded-full" style={{ width: '98%' }} />
-            </div>
-          </div>
-        )} */}
-
-        {/* Collapse toggle */}
-        {/* <button
-          onClick={toggleSidebar}
-          className="w-full flex items-center justify-center p-1.5 text-ink-faint dark:text-gray-500 hover:bg-surface-muted dark:hover:bg-dark-border transition-colors"
-        >
-          {sidebarCollapsed ? <ChevronRight size={11} /> : <ChevronLeft size={11} />}
-        </button> */}
+        <RoleSwitcher collapsed={sidebarCollapsed} />
       </div>
     </aside>
   );

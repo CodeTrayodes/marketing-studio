@@ -193,7 +193,7 @@ export default function SettingsPage() {
   const showInternals = useAppStore((s) => s.canSee('showAgentInternals'));
 
   return (
-    <div className="p-4 space-y-4 max-w-[800px] mx-auto">
+    <div className="p-4 space-y-4 max-w-[5xl] mx-auto">
       <RoleSwitcher />
       <ThemeSettings />
       <SystemInfo />

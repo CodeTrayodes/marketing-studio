@@ -54,9 +54,11 @@ export const useAppStore = create((set, get) => ({
   role: ROLES.MARKETING_HEAD,
   theme: 'light',
   sidebarCollapsed: false,
+  mobileSidebarOpen: false,
   activeModal: null,
 
   setRole: (role) => set({ role }),
+  setMobileSidebarOpen: (v) => set({ mobileSidebarOpen: v }),
   setTheme: (theme) => {
     set({ theme });
     if (theme === 'dark') {

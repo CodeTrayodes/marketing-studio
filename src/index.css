@@ -115,6 +115,21 @@
   .section-label {
     @apply text-xs font-semibold uppercase tracking-widest text-ink-faint;
   }
+
+  .roi-hero {
+    background-color: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .dark .roi-hero {
+    background-color: #052e16;
+    border-color: #166534;
+  }
 }
 
 @layer utilities {

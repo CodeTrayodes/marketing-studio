@@ -14,6 +14,15 @@ export function ActivityFeed({ maxItems = 10, className }) {
   const feed = useAgentStore((s) => s.activityFeed);
   const items = feed.slice(0, maxItems);
 
+  if (items.length === 0) {
+    return (
+      <div className={cn('flex flex-col items-center justify-center py-8 text-center', className)}>
+        <span className="w-1.5 h-1.5 rounded-full bg-agent-idle animate-pulse mb-2" />
+        <p className="text-[10px] text-ink-faint dark:text-gray-500">Waiting for agent activity...</p>
+      </div>
+    );
+  }
+
   return (
     <div className={cn('space-y-0', className)}>
       <AnimatePresence initial={false}>

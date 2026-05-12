@@ -22,7 +22,12 @@ export function AppShell() {
   const { mobileSidebarOpen, setMobileSidebarOpen } = useAppStore();
 
   return (
-    <div className="flex h-screen bg-surface-subtle dark:bg-dark-bg overflow-hidden">
+    <div className="flex h-screen flex-col overflow-hidden bg-surface-subtle dark:bg-dark-bg">
+      <TopBar
+        title={meta.title}
+        subtitle={meta.subtitle}
+        onMenuClick={() => setMobileSidebarOpen(true)}
+      />
 
       {/* Mobile sidebar overlay */}
       <AnimatePresence>
@@ -32,36 +37,33 @@ export function AppShell() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            className="fixed inset-x-0 bottom-0 top-14 z-30 bg-black/40 md:hidden"
             onClick={() => setMobileSidebarOpen(false)}
           />
         )}
       </AnimatePresence>
 
-      <Sidebar
-        mobileOpen={mobileSidebarOpen}
-        onClose={() => setMobileSidebarOpen(false)}
-      />
-
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <TopBar
-          title={meta.title}
-          subtitle={meta.subtitle}
-          onMenuClick={() => setMobileSidebarOpen(true)}
+      <div className="flex min-h-0 flex-1">
+        <Sidebar
+          mobileOpen={mobileSidebarOpen}
+          onClose={() => setMobileSidebarOpen(false)}
         />
 
-        <AnimatePresence mode="wait">
-          <motion.main
-            key={location.pathname}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 overflow-y-auto scrollbar-thin"
-          >
-            <Outlet />
-          </motion.main>
-        </AnimatePresence>
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+
+          <AnimatePresence mode="wait">
+            <motion.main
+              key={location.pathname}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="flex-1 overflow-y-auto scrollbar-thin"
+            >
+              <Outlet />
+            </motion.main>
+          </AnimatePresence>
+        </div>
       </div>
 
       <ToastContainer />

@@ -26,7 +26,7 @@ function MetricTile({ label, value, sub, accent, explanation, i = 0 }) {
     <motion.div custom={i} variants={FADE_UP} initial="hidden" animate="show" className="card p-4">
       <p className="text-[10px] font-medium text-ink-muted dark:text-gray-400 uppercase tracking-wider leading-none mb-2">{label}</p>
       <div className="flex items-baseline gap-1">
-        <span className={cn('text-xl font-semibold font-mono-nums', accent ? 'text-brand-green' : 'text-ink dark:text-white')}>{value}</span>
+        <span className={cn('text-lg font-semibold font-mono-nums', accent ? 'text-brand-green' : 'text-ink dark:text-white')}>{value}</span>
         {sub && <span className="text-[10px] text-ink-muted dark:text-gray-400">{sub}</span>}
       </div>
       {explanation && <p className="text-[9px] text-ink-faint dark:text-gray-500 mt-1.5 leading-relaxed">{explanation}</p>}
@@ -54,7 +54,7 @@ function ROIHeroCard() {
     <div className="roi-hero">
       <div className="flex-1 min-w-0">
         <p className="text-[9px] font-semibold uppercase tracking-widest text-green-700 dark:text-green-400 mb-1">Agency Cost Avoided This Quarter</p>
-        <p className="text-[42px] font-bold text-brand-green leading-none font-mono-nums">{formatCurrency(laborVal)}</p>
+        <p className="text-[32px] font-bold text-brand-green leading-none font-mono-nums">{formatCurrency(laborVal)}</p>
         <p className="text-[11px] text-ink-muted dark:text-green-200/70 mt-3 leading-relaxed max-w-xl">
           Your AI content system spent{' '}
           <strong className="text-ink dark:text-green-100">{formatCurrency(computeCost)}</strong> in compute this quarter.
@@ -63,7 +63,7 @@ function ROIHeroCard() {
         </p>
       </div>
       <div className="flex flex-col items-center flex-shrink-0 pr-2">
-        <p className="text-[64px] font-bold text-brand-green leading-none font-mono-nums">{roiMult}×</p>
+        <p className="text-[48px] font-bold text-brand-green leading-none font-mono-nums">{roiMult}×</p>
         <p className="text-[9px] font-semibold text-green-700 dark:text-green-400 mt-1 text-center uppercase tracking-wider">ROI Multiple</p>
       </div>
     </div>

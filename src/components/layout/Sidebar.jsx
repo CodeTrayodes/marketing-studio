@@ -4,18 +4,25 @@ import { useAppStore, ROLE_CONFIG } from '../../store/useAppStore';
 import { useAgentStore } from '../../store/useAgentStore';
 import { RoleSwitcher } from '../ui/RoleSwitcher';
 import {
-  LayoutDashboard, GitBranch, FileText, Shield, BarChart3, Settings,
+  BarChart3,
+  FileText,
+  GitBranch,
+  LayoutDashboard,
+  Settings,
+  ShieldCheck,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_ITEMS = [
-  { path: '/', label: 'Command Centre', icon: LayoutDashboard, exact: true },
-  { path: '/pipeline', label: 'Agent Pipeline', icon: GitBranch },
-  { path: '/content', label: 'Content Tracker', icon: FileText },
-  { path: '/gates', label: 'Gate Manager', icon: Shield },
-  { path: '/performance', label: 'Performance', icon: BarChart3 },
-  { path: '/settings', label: 'Settings', icon: Settings },
+  { path: '/', label: 'Command Centre', icon: LayoutDashboard, exact: true, group: 'Monitor' },
+  { path: '/pipeline', label: 'Agent Pipeline', icon: GitBranch, group: 'Monitor', badge: 'live' },
+  { path: '/content', label: 'Content Tracker', icon: FileText, group: 'Analyse' },
+  { path: '/gates', label: 'Gate Manager', icon: ShieldCheck, group: 'Analyse' },
+  { path: '/performance', label: 'Performance', icon: BarChart3, group: 'Analyse' },
+  { path: '/settings', label: 'Settings', icon: Settings, group: 'Operate' },
 ];
+
+const GROUPS = ['Monitor', 'Analyse', 'Operate'];
 
 export function Sidebar({ mobileOpen, onClose }) {
   const { role, sidebarCollapsed } = useAppStore();
@@ -24,90 +31,89 @@ export function Sidebar({ mobileOpen, onClose }) {
 
   return (
     <aside className={cn(
-      'flex flex-col bg-white dark:bg-dark-card border-r border-border dark:border-dark-border',
+      'flex flex-col bg-white dark:bg-dark-card border-r border-border/80 dark:border-dark-border',
       'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex-shrink-0 z-40',
-      // Mobile: fixed overlay; Desktop: in-flow
-      'fixed inset-y-0 left-0 md:relative md:inset-auto',
-      // Width
-      sidebarCollapsed ? 'w-12' : 'w-48',
-      // Mobile slide in/out
+      'fixed top-14 bottom-0 left-0 md:relative md:top-auto md:bottom-auto',
+      sidebarCollapsed ? 'w-14' : 'w-[220px]',
       mobileOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full md:translate-x-0',
     )}>
-
-      {/* Logo */}
-      <div className={cn(
-        'flex items-center border-b border-border dark:border-dark-border h-10 flex-shrink-0',
-        sidebarCollapsed ? 'justify-center' : 'px-3 gap-2'
-      )}>
-        <div className="w-5 h-5 rounded-[4px] bg-brand-green flex items-center justify-center flex-shrink-0">
-          <span className="text-white text-[10px] font-bold leading-none">P</span>
+      <nav className="flex-1 overflow-y-auto scrollbar-thin py-4">
+        <div className="mx-3 mb-5">
+          <RoleSwitcher collapsed={sidebarCollapsed} variant="sidebarTop" />
         </div>
-        <AnimatePresence>
-          {!sidebarCollapsed && (
-            <motion.div
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden flex-shrink-0"
-            >
-              <span className="text-[11px] font-semibold text-ink dark:text-white whitespace-nowrap">Pulse</span>
-              <span className="text-[10px] text-ink-faint dark:text-gray-500 ml-1 whitespace-nowrap">by LevelShift</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
-      {/* Nav */}
-      <nav className="flex-1 py-2 overflow-y-auto scrollbar-thin space-y-px">
-        {NAV_ITEMS.map((item) => {
-          const isVisible = roleConfig.visibleNav.includes(item.path);
-          if (!isVisible) return null;
+        {GROUPS.map((group) => {
+          const groupItems = NAV_ITEMS.filter(
+            (item) => item.group === group && roleConfig.visibleNav.includes(item.path)
+          );
+          if (groupItems.length === 0) return null;
 
           return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.exact}
-              onClick={onClose}
-              className={({ isActive }) => cn(
-                'flex items-center gap-2 mx-1.5 px-2 py-1.5 rounded-[6px] text-[11px] transition-all duration-150',
-                'hover:bg-surface-muted dark:hover:bg-dark-border',
-                isActive
-                  ? 'bg-surface-muted dark:bg-dark-border text-ink dark:text-white font-medium'
-                  : 'text-ink-muted dark:text-gray-400',
-                sidebarCollapsed && 'justify-center'
+            <div key={group} className="mb-5 last:mb-0">
+              {!sidebarCollapsed && (
+                <p className="mb-2 px-5 text-[10px] font-medium uppercase tracking-[0.2em] text-ink-faint dark:text-gray-500">
+                  {group}
+                </p>
               )}
-              title={sidebarCollapsed ? item.label : undefined}
-            >
-              <item.icon size={13} className="flex-shrink-0" />
-              <AnimatePresence>
-                {!sidebarCollapsed && (
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className="whitespace-nowrap overflow-hidden flex-1"
+
+              <div className="space-y-0.5">
+                {groupItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    end={item.exact}
+                    onClick={onClose}
+                    className={({ isActive }) => cn(
+                      'group relative flex min-h-9 items-center gap-3 px-5 text-[13px] transition-colors duration-150',
+                      'hover:text-ink dark:hover:text-white',
+                      isActive
+                        ? 'text-ink dark:text-white font-medium'
+                        : 'text-[#4f5874] dark:text-gray-400',
+                      sidebarCollapsed && 'justify-center px-0'
+                    )}
+                    title={sidebarCollapsed ? item.label : undefined}
                   >
-                    {item.label}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-              {item.path === '/pipeline' && runningCount > 0 && !sidebarCollapsed && (
-                <span className="flex-shrink-0 min-w-[14px] h-3.5 bg-brand-green text-white text-[8px] font-bold rounded-full flex items-center justify-center px-1">
-                  {runningCount}
-                </span>
-              )}
-            </NavLink>
+                    {({ isActive }) => (
+                      <>
+                        <span className={cn(
+                          'absolute left-0 top-1/2 h-6 w-[2px] -translate-y-1/2 bg-sky-500 transition-opacity',
+                          isActive ? 'opacity-100' : 'opacity-0'
+                        )} />
+                        <item.icon
+                          size={15}
+                          strokeWidth={1.35}
+                          className={cn(
+                            'flex-shrink-0 transition-colors',
+                            isActive ? 'text-sky-600 dark:text-sky-400' : 'text-[#8a94aa] group-hover:text-ink dark:group-hover:text-white'
+                          )}
+                        />
+                        <AnimatePresence>
+                          {!sidebarCollapsed && (
+                            <motion.span
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.15 }}
+                              className="min-w-0 flex-1 truncate"
+                            >
+                              {item.label}
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                        {item.path === '/pipeline' && runningCount > 0 && !sidebarCollapsed && (
+                          <span className="ml-auto min-w-6 rounded-full bg-slate-100 px-1.5 py-0.5 text-center text-[10px] font-medium text-[#657089] dark:bg-dark-border dark:text-gray-300">
+                            {runningCount}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
           );
         })}
       </nav>
-
-      {/* Bottom: role switcher */}
-      <div className="border-t border-border dark:border-dark-border">
-        <RoleSwitcher collapsed={sidebarCollapsed} />
-      </div>
     </aside>
   );
 }

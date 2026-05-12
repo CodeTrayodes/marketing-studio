@@ -99,14 +99,14 @@ export function NotificationBell() {
       <button
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          'relative w-7 h-7 flex items-center justify-center rounded-[6px] border transition-colors',
+          'relative w-8 h-8 flex items-center justify-center rounded-[6px] border transition-colors',
           open
             ? 'bg-surface-muted dark:bg-dark-border border-brand-green/30'
             : 'border-border dark:border-dark-border hover:bg-surface-muted dark:hover:bg-dark-border'
         )}
         aria-label="Notifications"
       >
-        <Bell size={12} className="text-ink-faint dark:text-gray-400" />
+        <Bell size={16} className="text-ink-faint dark:text-gray-400" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 text-white text-[7px] font-bold rounded-full flex items-center justify-center leading-none">
             {unreadCount > 9 ? '9+' : unreadCount}

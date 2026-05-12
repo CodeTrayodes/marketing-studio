@@ -21,7 +21,7 @@ export function MetricCard({ label, value, subValue, trend, trendLabel, explanat
 
       <div className="flex items-baseline gap-1.5">
         <span className={cn(
-          'text-xl font-semibold tracking-tight text-ink dark:text-white leading-none',
+          'text-lg font-semibold tracking-tight text-ink dark:text-white leading-none',
           mono && 'font-mono-nums',
           accent && 'text-brand-green'
         )}>

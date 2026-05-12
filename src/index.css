@@ -1,10 +1,10 @@
-@import '@fontsource/inter/300.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/geist-sans/300.css';
+@import '@fontsource/geist-sans/400.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-sans/600.css';
+@import '@fontsource/geist-sans/700.css';
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
 @import 'reactflow/dist/style.css';
 
 @tailwind base;
@@ -28,7 +28,7 @@
     min-height: 100dvh;
     background-color: #F8F9FA;
     color: #0A0A0A;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Geist Sans', system-ui, sans-serif;
     font-size: 12px;
     line-height: 1.5;
   }
@@ -134,7 +134,7 @@
 
 @layer utilities {
   .font-mono-nums {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Geist Mono', monospace;
     font-variant-numeric: tabular-nums;
   }
 

@@ -197,7 +197,7 @@ function HeroMetrics({ role }) {
               <CardValue>{pctUp}%</CardValue>
               <CardExplanation>How far through the Q2 content programme you are.</CardExplanation>
             </div>
-            <ArcProgress pct={completionPct} size={64} sw={4} />
+            {/* <ArcProgress pct={completionPct} size={64} sw={4} /> */}
           </div>
         </Card>
       </motion.div>

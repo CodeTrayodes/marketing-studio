@@ -23,8 +23,9 @@ const FADE_UP = {
 
 function KPIRow() {
   const role = useAppStore((s) => s.role);
-  const stats = useContentStore((s) => s.getStats());
-  const assetsCount = useCountUp(stats.published, 1200);
+  const publishedCount = useContentStore((s) => s.assets.filter((a) => a.status === 'published').length);
+  const pendingGateCount = useContentStore((s) => s.assets.filter((a) => ['gate-2-pending', 'gate-3-pending'].includes(a.status)).length);
+  const assetsCount = useCountUp(publishedCount, 1200);
   const qualityCount = useCountUp(QUARTERLY_METRICS.qualityAverage, 1000, 1);
   const roiCount = useCountUp(QUARTERLY_METRICS.roiMultiple, 1000, 1);
   const pipelineCount = useCountUp(QUARTERLY_METRICS.pipelineInfluenced / 1000, 1000, 0);
@@ -45,11 +46,11 @@ function KPIRow() {
           <div className="mt-2 w-full h-1 bg-border dark:bg-dark-border rounded-full overflow-hidden">
             <div
               className="h-full bg-brand-green rounded-full transition-all duration-1000"
-              style={{ width: `${(stats.published / QUARTERLY_METRICS.assetsTarget) * 100}%` }}
+              style={{ width: `${(publishedCount / QUARTERLY_METRICS.assetsTarget) * 100}%` }}
             />
           </div>
           <p className="text-[10px] text-ink-faint dark:text-gray-500 mt-1">
-            {Math.round((stats.published / QUARTERLY_METRICS.assetsTarget) * 100)}% of quarterly target
+            {Math.round((publishedCount / QUARTERLY_METRICS.assetsTarget) * 100)}% of quarterly target
           </p>
         </MetricCard>
       </motion.div>
@@ -96,7 +97,7 @@ function KPIRow() {
         <motion.div custom={2} variants={FADE_UP} initial="hidden" animate="show">
           <MetricCard
             label="Pending Approval"
-            value={stats.pendingGate}
+            value={pendingGateCount}
             subValue="assets"
             explanation="Assets waiting at Gate 2 or Gate 3 for human review"
           />
@@ -317,7 +318,6 @@ function BUOutputGrid() {
 
 export default function CommandCentre() {
   const role = useAppStore((s) => s.role);
-  const stats = useContentStore((s) => s.getStats());
   const systemHealth = useAgentStore((s) => s.systemHealth);
 
   return (

@@ -9,4 +9,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'flow': ['reactflow'],
+          'motion': ['framer-motion'],
+          'state': ['zustand'],
+        },
+      },
+    },
+  },
 })

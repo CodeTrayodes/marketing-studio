@@ -44,7 +44,7 @@ function AgentNode({ data }) {
   return (
     <div
       className={cn(
-        'bg-white dark:bg-dark-card rounded-[10px] shadow-card transition-all duration-200 select-none',
+        'bg-white dark:bg-dark-card rounded shadow-card transition-all duration-200 select-none',
         'border border-border dark:border-dark-border',
         isSelected && 'ring-2 ring-offset-1 shadow-lg',
       )}
@@ -67,8 +67,8 @@ function AgentNode({ data }) {
 
       {/* Name + role */}
       <div className="px-2.5 pb-2.5">
-        <p className="text-[11px] font-semibold text-ink dark:text-white leading-tight mb-0.5">{agent.name}</p>
-        <p className="text-[9px] text-ink-muted dark:text-gray-400 leading-snug line-clamp-2">
+        <p className="text-[12px] font-medium text-ink dark:text-white leading-tight mb-0.5">{agent.name}</p>
+        <p className="text-[10px] text-ink-muted dark:text-gray-400 leading-snug line-clamp-2">
           {state?.currentTask || agent.description}
         </p>
 
@@ -172,8 +172,8 @@ function GateNode({ data }) {
 
       {/* Label below diamond */}
       <div className="text-center mt-2">
-        <p className="text-[10px] font-bold text-ink dark:text-white">Gate {gate.number}</p>
-        <p className="text-[9px] text-ink-muted dark:text-gray-400 leading-tight">{gate.name}</p>
+        <p className="text-[10px] font-medium text-ink dark:text-white">Gate {gate.number}</p>
+        <p className="text-[10px] text-ink-muted dark:text-gray-400 leading-tight">{gate.name}</p>
         <GateSLALine gate={gate} />
       </div>
 
@@ -417,20 +417,20 @@ function AgentPanel({ agentId, onClose }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 16 }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-      className="absolute top-3 right-3 w-80 bg-white dark:bg-dark-card border border-border dark:border-dark-border rounded-[12px] shadow-card-hover z-20 overflow-hidden flex flex-col max-h-[calc(100%-24px)]"
+      className="absolute top-3 right-3 w-80 bg-white dark:bg-dark-card border border-border dark:border-dark-border rounded shadow-card-hover z-20 overflow-hidden flex flex-col max-h-[calc(100%-24px)]"
     >
       {/* Header */}
       <div className="px-3 py-2.5 border-b border-border dark:border-dark-border flex items-center gap-2 flex-shrink-0"
         style={{ borderLeft: `3px solid ${lc.hex}` }}>
-        <div className="w-6 h-6 rounded-[5px] flex items-center justify-center text-[8px] font-bold text-white flex-shrink-0"
+        <div className="w-6 h-6 rounded flex items-center justify-center text-[9px] font-medium text-white flex-shrink-0"
           style={{ backgroundColor: lc.hex }}>
           {agent.code}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-semibold text-ink dark:text-white leading-tight truncate">{agent.name}</p>
-          <p className="text-[9px] text-ink-muted dark:text-gray-400">Layer {agent.layer} · {agent.model}</p>
+          <p className="text-[12px] font-medium text-ink dark:text-white leading-tight truncate">{agent.name}</p>
+          <p className="text-[10px] text-ink-muted dark:text-gray-400">Layer {agent.layer} · {agent.model}</p>
         </div>
-        <span className={cn('text-[9px] font-semibold px-1.5 py-0.5 rounded-full', statusColor)}>{statusLabel}</span>
+        <span className={cn('text-[10px] font-medium px-1.5 py-0.5 rounded', statusColor)}>{statusLabel}</span>
         <button onClick={onClose} className="text-ink-faint dark:text-gray-500 hover:text-ink dark:hover:text-white ml-1">
           <X size={13} />
         </button>
@@ -455,16 +455,16 @@ function AgentPanel({ agentId, onClose }) {
 
           {/* Description */}
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1">What this agent does</p>
-            <p className="text-[10px] text-ink-muted dark:text-gray-400 leading-relaxed">{agent.description}</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1">What this agent does</p>
+            <p className="text-[11px] text-ink-muted dark:text-gray-400 leading-relaxed">{agent.description}</p>
           </div>
 
           {/* Responsibilities */}
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1.5">Responsibilities</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1.5">Responsibilities</p>
             <ul className="space-y-1">
               {agent.responsibilities.map((r, i) => (
-                <li key={i} className="flex items-start gap-1.5 text-[10px] text-ink-muted dark:text-gray-400">
+                <li key={i} className="flex items-start gap-1.5 text-[11px] text-ink-muted dark:text-gray-400">
                   <CheckCircle size={9} className="text-brand-green flex-shrink-0 mt-0.5" />
                   {r}
                 </li>
@@ -474,10 +474,10 @@ function AgentPanel({ agentId, onClose }) {
 
           {/* Outputs */}
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1.5">Outputs</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1.5">Outputs</p>
             <ul className="space-y-1">
               {agent.outputs.map((o, i) => (
-                <li key={i} className="flex items-start gap-1.5 text-[10px] text-ink-muted dark:text-gray-400">
+                <li key={i} className="flex items-start gap-1.5 text-[11px] text-ink-muted dark:text-gray-400">
                   <span className="w-1 h-1 rounded-full bg-ink-faint flex-shrink-0 mt-1.5" />
                   {o}
                 </li>
@@ -507,8 +507,8 @@ function AgentPanel({ agentId, onClose }) {
 
           {/* COE-only telemetry */}
           {showInternals && (
-            <div className="bg-surface-muted dark:bg-dark-border rounded-[6px] p-2 space-y-1">
-              <p className="text-[9px] font-semibold text-ink-faint dark:text-gray-500 uppercase tracking-wider mb-1">Telemetry</p>
+            <div className="bg-surface-muted dark:bg-dark-border rounded p-2 space-y-1">
+              <p className="text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-1">Telemetry</p>
               <div className="grid grid-cols-2 gap-1.5">
                 <div>
                   <p className="text-[8px] text-ink-faint dark:text-gray-500">Tokens used</p>
@@ -533,7 +533,7 @@ function AgentPanel({ agentId, onClose }) {
           {/* Recent activity */}
           {recentActivity.length > 0 && (
             <div>
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1.5">Recent Activity</p>
+              <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1.5">Recent Activity</p>
               <div className="space-y-1.5">
                 {recentActivity.map(item => (
                   <div key={item.id} className="flex items-start gap-1.5">
@@ -594,17 +594,17 @@ function GatePanel({ gateId, onClose }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 16 }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-      className="absolute top-3 right-3 w-80 bg-white dark:bg-dark-card border border-border dark:border-dark-border rounded-[12px] shadow-card-hover z-20 overflow-hidden flex flex-col max-h-[calc(100%-24px)]"
+      className="absolute top-3 right-3 w-80 bg-white dark:bg-dark-card border border-border dark:border-dark-border rounded shadow-card-hover z-20 overflow-hidden flex flex-col max-h-[calc(100%-24px)]"
     >
       {/* Header */}
       <div className="px-3 py-2.5 border-b border-border dark:border-dark-border flex items-center gap-2 flex-shrink-0"
         style={{ borderLeft: `3px solid ${statusColor}` }}>
-        <div className="w-6 h-6 rounded-[5px] flex items-center justify-center text-[8px] font-bold text-white flex-shrink-0"
+        <div className="w-6 h-6 rounded flex items-center justify-center text-[9px] font-medium text-white flex-shrink-0"
           style={{ backgroundColor: statusColor, transform: 'rotate(45deg)' }}>
           <span style={{ transform: 'rotate(-45deg)' }}>{gate.number}</span>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-semibold text-ink dark:text-white leading-tight">Gate {gate.number} — {gate.name}</p>
+          <p className="text-[12px] font-medium text-ink dark:text-white leading-tight">Gate {gate.number} — {gate.name}</p>
           <GateSLALiveInPanel gate={gate} />
         </div>
         <button onClick={onClose} className="text-ink-faint dark:text-gray-500 hover:text-ink dark:hover:text-white">
@@ -632,7 +632,7 @@ function GatePanel({ gateId, onClose }) {
 
           {/* Reviewers */}
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1.5">Reviewers</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1.5">Reviewers</p>
             <div className="space-y-1.5">
               {gate.approvers.map((a, i) => (
                 <div key={i} className="flex items-center gap-2">
@@ -651,19 +651,19 @@ function GatePanel({ gateId, onClose }) {
           {/* Trigger / on-approve */}
           <div className="space-y-1.5">
             <div>
-              <p className="text-[8px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500">Triggered by</p>
-              <p className="text-[9px] text-ink-muted dark:text-gray-400 mt-0.5">{gate.triggers}</p>
+              <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500">Triggered by</p>
+              <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">{gate.triggers}</p>
             </div>
             <div>
-              <p className="text-[8px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500">On approve</p>
-              <p className="text-[9px] text-ink-muted dark:text-gray-400 mt-0.5">{gate.onApprove}</p>
+              <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500">On approve</p>
+              <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">{gate.onApprove}</p>
             </div>
           </div>
 
           {/* Pending items */}
           {pendingAssets.length > 0 && (
             <div>
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1.5">Pending Items</p>
+              <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1.5">Pending Items</p>
               <div className="space-y-1">
                 {pendingAssets.map(a => (
                   <div key={a.id} className="flex items-center gap-1.5 py-0.5">
@@ -677,9 +677,9 @@ function GatePanel({ gateId, onClose }) {
 
           {/* Locked state */}
           {gate.status === 'pending' && (
-            <div className="bg-surface-muted dark:bg-dark-border rounded-[6px] p-2 flex items-center gap-2">
+            <div className="bg-surface-muted dark:bg-dark-border rounded p-2 flex items-center gap-2">
               <Lock size={11} className="text-gray-400 flex-shrink-0" />
-              <p className="text-[9px] text-ink-muted dark:text-gray-400">
+              <p className="text-[10px] text-ink-muted dark:text-gray-400">
                 Waiting for Gate {gate.number - 1} to be approved before this gate unlocks.
               </p>
             </div>
@@ -690,23 +690,23 @@ function GatePanel({ gateId, onClose }) {
             <div className="flex gap-2 pt-1">
               <button
                 onClick={() => approveAll(gateId)}
-                className="flex-1 flex items-center justify-center gap-1 px-2.5 py-1.5 bg-brand-green text-white rounded-[6px] text-[10px] font-semibold hover:bg-brand-green-dark transition-colors"
+                className="flex-1 flex items-center justify-center gap-1 px-2.5 py-1.5 bg-brand-green text-white rounded text-[11px] font-medium hover:bg-brand-green-dark transition-colors"
               >
                 <CheckCircle2 size={11} />
                 Approve All
               </button>
               <button
                 onClick={() => approveGateItem(gateId)}
-                className="flex-1 flex items-center justify-center gap-1 px-2.5 py-1.5 border border-border dark:border-dark-border rounded-[6px] text-[10px] font-medium text-ink-muted dark:text-gray-400 hover:bg-surface-muted dark:hover:bg-dark-border transition-colors"
+                className="flex-1 flex items-center justify-center gap-1 px-2.5 py-1.5 border border-border dark:border-dark-border rounded text-[11px] font-medium text-ink-muted dark:text-gray-400 hover:bg-surface-muted dark:hover:bg-dark-border transition-colors"
               >
                 Approve One
               </button>
             </div>
           )}
           {gate.status === 'completed' && (
-            <div className="flex items-center gap-1.5 py-1.5 px-2.5 bg-brand-green-light dark:bg-green-900/20 rounded-[6px]">
+            <div className="flex items-center gap-1.5 py-1.5 px-2.5 bg-brand-green-light dark:bg-green-900/20 rounded">
               <CheckCircle2 size={11} className="text-brand-green" />
-              <p className="text-[9px] font-semibold text-brand-green-dark dark:text-green-400">Gate approved — pipeline advanced</p>
+              <p className="text-[10px] font-medium text-brand-green-dark dark:text-green-400">Gate approved — pipeline advanced</p>
             </div>
           )}
 
@@ -782,7 +782,7 @@ export default function PipelinePage() {
         <div className="flex items-center gap-3 flex-shrink-0">
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse" />
-            <span className="text-[10px] text-brand-green font-semibold">{runningCount} running</span>
+            <span className="text-[11px] text-brand-green font-medium">{runningCount} running</span>
           </div>
           <span className="text-[9px] text-ink-faint dark:text-gray-500">Click any node to inspect</span>
         </div>

@@ -65,7 +65,7 @@ function AgentBadge({ agentId }) {
   const hex = LAYER_HEX[agent?.layer] || '#6B7280';
   return (
     <span
-      className="inline-block text-[8px] font-mono font-bold px-1.5 py-px rounded"
+      className="inline-block text-[9px] font-mono font-medium px-1.5 py-px rounded"
       style={{ backgroundColor: `${hex}18`, color: hex }}
     >
       {agent?.code || agentId}
@@ -74,24 +74,24 @@ function AgentBadge({ agentId }) {
 }
 
 function QualityBadge({ score }) {
-  if (score == null) return <span className="text-ink-faint dark:text-gray-600 text-[9px]">—</span>;
+  if (score == null) return <span className="text-ink-faint dark:text-gray-600 text-[10px]">—</span>;
   const cls = score >= 85
     ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
     : score >= 70
     ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
     : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
-  return <span className={cn('text-[9px] font-mono font-semibold px-1.5 py-px rounded-full', cls)}>{score}</span>;
+  return <span className={cn('text-[10px] font-mono font-medium px-1.5 py-px rounded', cls)}>{score}</span>;
 }
 
 function GeoBar({ score }) {
-  if (score == null) return <span className="text-ink-faint dark:text-gray-600 text-[9px]">—</span>;
+  if (score == null) return <span className="text-ink-faint dark:text-gray-600 text-[10px]">—</span>;
   const hex = score >= 80 ? '#16A34A' : score >= 65 ? '#D97706' : '#DC2626';
   return (
     <div className="flex items-center gap-1.5">
       <div className="w-10 h-px bg-border dark:bg-dark-border rounded-full overflow-hidden">
         <div className="h-full rounded-full" style={{ width: `${score}%`, backgroundColor: hex }} />
       </div>
-      <span className="text-[9px] font-mono" style={{ color: hex }}>{score}</span>
+      <span className="text-[10px] font-mono" style={{ color: hex }}>{score}</span>
     </div>
   );
 }
@@ -135,7 +135,7 @@ function AssetDetailPanel({ asset, onClose }) {
             <span className="badge bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400">{asset.buAbbr}</span>
             <QualityBadge score={asset.qualityScores?.overall} />
           </div>
-          <h3 className="text-[11px] font-semibold text-ink dark:text-white leading-snug">{asset.title}</h3>
+          <h3 className="text-[12px] font-medium text-ink dark:text-white leading-snug">{asset.title}</h3>
         </div>
         <button onClick={onClose} className="text-ink-muted dark:text-gray-400 hover:text-ink dark:hover:text-white flex-shrink-0 mt-0.5">
           <X size={13} />
@@ -147,7 +147,7 @@ function AssetDetailPanel({ asset, onClose }) {
         {/* Quality breakdown */}
         {asset.qualityScores && (
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-2">Quality Breakdown</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-2">Quality Breakdown</p>
             <div className="space-y-2">
               {[
                 { label: 'SEO Score', val: asset.qualityScores.seo },
@@ -156,8 +156,8 @@ function AssetDetailPanel({ asset, onClose }) {
               ].map(({ label, val }) => (
                 <div key={label}>
                   <div className="flex justify-between mb-0.5">
-                    <span className="text-[9px] text-ink-muted dark:text-gray-400">{label}</span>
-                    <span className={cn('text-[9px] font-mono font-semibold', qualityColor(val))}>{val}/100</span>
+                    <span className="text-[10px] text-ink-muted dark:text-gray-400">{label}</span>
+                    <span className={cn('text-[10px] font-mono font-medium', qualityColor(val))}>{val}/100</span>
                   </div>
                   <div className="w-full h-1 bg-border dark:bg-dark-border rounded-full overflow-hidden">
                     <div className="h-full rounded-full transition-all duration-500"
@@ -166,8 +166,8 @@ function AssetDetailPanel({ asset, onClose }) {
                 </div>
               ))}
               <div className="flex justify-between items-center pt-0.5">
-                <span className="text-[9px] text-ink-muted dark:text-gray-400">AI Detection</span>
-                <span className="text-[9px] font-semibold text-brand-green">PASS ✓ ({asset.qualityScores.aiDetection}%)</span>
+                <span className="text-[10px] text-ink-muted dark:text-gray-400">AI Detection</span>
+                <span className="text-[10px] font-medium text-brand-green">PASS ✓ ({asset.qualityScores.aiDetection}%)</span>
               </div>
             </div>
           </div>
@@ -176,16 +176,16 @@ function AssetDetailPanel({ asset, onClose }) {
         {/* Content preview */}
         {asset.preview && (
           <div>
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-1.5">Content Preview</p>
-            <div className="bg-surface-muted dark:bg-dark-border rounded-[6px] p-2.5">
-              <p className="text-[10px] text-ink-muted dark:text-gray-400 leading-relaxed line-clamp-5">{asset.preview}</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-1.5">Content Preview</p>
+            <div className="bg-surface-muted dark:bg-dark-border rounded p-2.5">
+              <p className="text-[11px] text-ink-muted dark:text-gray-400 leading-relaxed line-clamp-5">{asset.preview}</p>
             </div>
           </div>
         )}
 
         {/* Details */}
         <div className="space-y-1.5">
-          <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500">Details</p>
+          <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500">Details</p>
           {[
             { label: 'Agent', value: asset.agentName },
             { label: 'Channel', value: asset.channel },
@@ -195,8 +195,8 @@ function AssetDetailPanel({ asset, onClose }) {
             { label: 'Gate Status', value: gateLabel },
           ].map(({ label, value }) => (
             <div key={label} className="flex items-start justify-between gap-3">
-              <span className="text-[9px] text-ink-faint dark:text-gray-500 flex-shrink-0">{label}</span>
-              <span className="text-[9px] text-ink-muted dark:text-gray-400 text-right leading-relaxed">{value}</span>
+              <span className="text-[10px] text-ink-faint dark:text-gray-500 flex-shrink-0">{label}</span>
+              <span className="text-[10px] text-ink-muted dark:text-gray-400 text-right leading-relaxed">{value}</span>
             </div>
           ))}
         </div>
@@ -204,7 +204,7 @@ function AssetDetailPanel({ asset, onClose }) {
         {/* Gate manager link */}
         {showGateLink && (
           <Link to="/gates"
-            className="flex items-center justify-center gap-1.5 w-full px-3 py-1.5 bg-brand-green text-white rounded-[6px] text-[10px] font-semibold hover:bg-green-700 transition-colors"
+            className="flex items-center justify-center gap-1.5 w-full px-3 py-1.5 bg-brand-green text-white rounded text-[11px] font-medium hover:bg-green-700 transition-colors"
           >
             View in Gate Manager
             <ExternalLink size={10} />
@@ -307,7 +307,7 @@ export default function ContentTracker() {
                 key={bu.id}
                 onClick={() => handleBUChange(bu.id)}
                 className={cn(
-                  'px-2 py-1 rounded-[5px] text-[10px] font-semibold transition-colors',
+                  'px-2 py-1 rounded text-[10px] font-medium transition-colors',
                   filterBU === bu.id
                     ? 'bg-ink dark:bg-white text-white dark:text-ink'
                     : 'bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400 hover:bg-border dark:hover:bg-dark-border'
@@ -317,12 +317,12 @@ export default function ContentTracker() {
               </button>
             ))}
           </div>
-          <p className="text-[10px] text-ink-muted dark:text-gray-400">
-            <span className="font-semibold text-ink dark:text-white">{stats.total}</span> assets this quarter
+          <p className="text-[11px] text-ink-muted dark:text-gray-400">
+            <span className="font-medium text-ink dark:text-white">{stats.total}</span> assets this quarter
             {' · '}
-            <span className="font-semibold text-brand-green">{stats.published}</span> published
+            <span className="font-medium text-brand-green">{stats.published}</span> published
             {' · '}
-            <span className="font-semibold text-amber-500">{stats.inReview}</span> in review
+            <span className="font-medium text-amber-500">{stats.inReview}</span> in review
           </p>
         </div>
 
@@ -367,7 +367,7 @@ export default function ContentTracker() {
           <select
             value={typeFilter}
             onChange={e => { setTypeFilter(e.target.value); setPage(0); }}
-            className="text-[9px] bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded-[5px] px-2 py-1 text-ink dark:text-white focus:outline-none focus:ring-1 focus:ring-brand-green"
+            className="text-[10px] bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded px-2 py-1 text-ink dark:text-white focus:outline-none focus:ring-1 focus:ring-brand-green"
           >
             {TYPE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
@@ -377,10 +377,10 @@ export default function ContentTracker() {
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(0); }}
             placeholder="Search..."
-            className="text-[9px] bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded-[5px] px-2 py-1 text-ink dark:text-white placeholder:text-ink-faint focus:outline-none focus:ring-1 focus:ring-brand-green w-28"
+            className="text-[10px] bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded px-2 py-1 text-ink dark:text-white placeholder:text-ink-faint focus:outline-none focus:ring-1 focus:ring-brand-green w-28"
           />
 
-          <span className="ml-auto text-[9px] text-ink-faint dark:text-gray-500">{filtered.length} shown</span>
+          <span className="ml-auto text-[10px] text-ink-faint dark:text-gray-500">{filtered.length} shown</span>
         </div>
       </div>
 
@@ -393,8 +393,8 @@ export default function ContentTracker() {
           { label: 'Published Today', value: stats.publishedToday, color: 'text-brand-green' },
         ].map(({ label, value, color }) => (
           <div key={label} className="flex items-center gap-1.5">
-            <span className="text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider">{label}</span>
-            <span className={cn('text-[11px] font-semibold font-mono-nums', color)}>{value}</span>
+            <span className="text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em]">{label}</span>
+            <span className={cn('text-[12px] font-medium font-mono-nums', color)}>{value}</span>
           </div>
         ))}
       </div>
@@ -408,7 +408,7 @@ export default function ContentTracker() {
                 {TABLE_COLS.map(({ field, label, w, isNew }) => (
                   <th
                     key={field}
-                    className={cn('text-left px-3 py-2 font-medium text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider cursor-pointer hover:text-ink dark:hover:text-white whitespace-nowrap', w)}
+                    className={cn('text-left px-3 py-2 font-medium text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] cursor-pointer hover:text-ink dark:hover:text-white whitespace-nowrap', w)}
                     onClick={() => setSort(field)}
                   >
                     <div className="flex items-center gap-1">
@@ -436,20 +436,20 @@ export default function ContentTracker() {
                     )}
                   >
                     <td className="px-3 py-2">
-                      <span className="font-mono text-[8px] font-bold text-ink-muted dark:text-gray-400 bg-surface-muted dark:bg-dark-border px-1 py-px rounded">
+                      <span className="font-mono text-[9px] font-medium text-ink-muted dark:text-gray-400 bg-surface-muted dark:bg-dark-border px-1 py-px rounded">
                         {asset.buAbbr}
                       </span>
                     </td>
                     <td className="px-3 py-2">
-                      <p className="font-medium text-[10px] text-ink dark:text-white line-clamp-2 max-w-[280px]">{asset.title}</p>
+                      <p className="font-medium text-[11px] text-ink dark:text-white line-clamp-2 max-w-[280px]">{asset.title}</p>
                     </td>
-                    <td className="px-3 py-2 text-[9px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.typeName}</td>
+                    <td className="px-3 py-2 text-[10px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.typeName}</td>
                     <td className="px-3 py-2"><AgentBadge agentId={asset.agent} /></td>
                     <td className="px-3 py-2"><StatusBadge status={asset.status} /></td>
                     <td className="px-3 py-2"><QualityBadge score={asset.qualityScores?.overall} /></td>
                     <td className="px-3 py-2"><GeoBar score={asset.qualityScores?.geo} /></td>
-                    <td className="px-3 py-2 text-[9px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.channel}</td>
-                    <td className="px-3 py-2 text-[9px] text-ink-faint dark:text-gray-500 whitespace-nowrap">{timeAgo(asset.createdAt)}</td>
+                    <td className="px-3 py-2 text-[10px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.channel}</td>
+                    <td className="px-3 py-2 text-[10px] text-ink-faint dark:text-gray-500 whitespace-nowrap">{timeAgo(asset.createdAt)}</td>
                     <td className="px-3 py-2">
                       <ChevronRight size={10} className={cn('text-ink-faint', isSel && 'text-brand-green')} />
                     </td>

@@ -1,10 +1,4 @@
-@import '@fontsource/geist-sans/300.css';
-@import '@fontsource/geist-sans/400.css';
-@import '@fontsource/geist-sans/500.css';
-@import '@fontsource/geist-sans/600.css';
-@import '@fontsource/geist-sans/700.css';
-@import '@fontsource/geist-mono/400.css';
-@import '@fontsource/geist-mono/500.css';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 @import 'reactflow/dist/style.css';
 
 @tailwind base;
@@ -27,10 +21,12 @@
     padding: 0;
     min-height: 100dvh;
     background-color: #F8F9FA;
-    color: #0A0A0A;
-    font-family: 'Geist Sans', system-ui, sans-serif;
-    font-size: 12px;
+    color: #111827;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
     line-height: 1.5;
+    letter-spacing: -0.01em;
   }
 
   .dark body {
@@ -55,7 +51,8 @@
   }
 
   .metric-value {
-    @apply font-mono text-2xl font-semibold tracking-tight text-ink;
+    font-family: 'IBM Plex Mono', monospace;
+    @apply text-2xl font-medium tracking-tight text-ink;
   }
 
   .dark .metric-value {
@@ -63,39 +60,28 @@
   }
 
   .status-dot {
-    @apply w-2 h-2 rounded-full inline-block flex-shrink-0;
+    @apply w-1.5 h-1.5 rounded-full inline-block flex-shrink-0;
   }
 
-  .status-dot.running {
-    @apply bg-brand-green animate-pulse-slow;
-  }
-
-  .status-dot.idle {
-    @apply bg-agent-idle;
-  }
-
-  .status-dot.error {
-    @apply bg-agent-error animate-pulse;
-  }
-
-  .status-dot.waiting {
-    @apply bg-agent-gate animate-pulse-slow;
-  }
+  .status-dot.running  { @apply bg-brand-green animate-pulse-slow; }
+  .status-dot.idle     { @apply bg-agent-idle; }
+  .status-dot.error    { @apply bg-agent-error animate-pulse; }
+  .status-dot.waiting  { @apply bg-agent-gate animate-pulse-slow; }
 
   .badge {
     @apply inline-flex items-center gap-1 px-1.5 py-px rounded-badge text-[10px] font-medium;
   }
 
   .btn-primary {
-    @apply bg-brand-green text-white px-3 py-1.5 rounded-btn text-xs font-medium
-           hover:bg-brand-green-dark transition-colors duration-200
+    @apply bg-brand-green text-white px-3 py-1.5 rounded-btn text-[13px] font-medium
+           hover:bg-brand-green-dark transition-colors duration-150
            active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-brand-green focus-visible:ring-offset-2;
   }
 
   .btn-secondary {
-    @apply bg-surface-muted text-ink border border-border px-3 py-1.5 rounded-btn text-xs font-medium
-           hover:bg-surface-subtle transition-colors duration-200
+    @apply bg-surface-muted text-ink border border-border px-3 py-1.5 rounded-btn text-[13px] font-medium
+           hover:bg-surface-subtle transition-colors duration-150
            active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-ink focus-visible:ring-offset-2;
   }
@@ -105,7 +91,7 @@
   }
 
   .page-header {
-    @apply text-xl font-semibold text-ink tracking-tight;
+    @apply text-xl font-medium text-ink tracking-tight;
   }
 
   .dark .page-header {
@@ -113,13 +99,13 @@
   }
 
   .section-label {
-    @apply text-xs font-semibold uppercase tracking-widest text-ink-faint;
+    @apply text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint;
   }
 
   .roi-hero {
     background-color: #F0FDF4;
     border: 1px solid #BBF7D0;
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 1.25rem;
     display: flex;
     align-items: center;
@@ -134,8 +120,9 @@
 
 @layer utilities {
   .font-mono-nums {
-    font-family: 'Geist Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
   }
 
   .animate-stagger-1 { animation-delay: 80ms; }
@@ -150,7 +137,7 @@
   }
 
   .dark .scrollbar-thin {
-    scrollbar-color: #2A2A2A transparent;
+    scrollbar-color: #242424 transparent;
   }
 
   .ai-panel {
@@ -158,8 +145,8 @@
   }
 
   .dark .ai-panel {
-    background-color: rgba(22, 163, 74, 0.08);
-    border-color: rgba(22, 163, 74, 0.2);
+    background-color: rgba(22, 163, 74, 0.06);
+    border-color: rgba(22, 163, 74, 0.18);
   }
 }
 
@@ -170,14 +157,14 @@
 
 .react-flow__controls {
   border: 1px solid #E5E7EB !important;
-  border-radius: 8px !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
   overflow: hidden;
 }
 
 .dark .react-flow__controls {
-  border-color: #2A2A2A !important;
-  background-color: #1A1A1A !important;
+  border-color: #242424 !important;
+  background-color: #141414 !important;
 }
 
 .react-flow__controls-button {
@@ -187,18 +174,18 @@
 }
 
 .dark .react-flow__controls-button {
-  border-bottom-color: #2A2A2A !important;
-  background: #1A1A1A !important;
+  border-bottom-color: #242424 !important;
+  background: #141414 !important;
   color: #9CA3AF !important;
 }
 
 .react-flow__minimap {
   border: 1px solid #E5E7EB !important;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
   overflow: hidden;
 }
 
 .dark .react-flow__minimap {
-  border-color: #2A2A2A !important;
-  background: #1A1A1A !important;
+  border-color: #242424 !important;
+  background: #141414 !important;
 }

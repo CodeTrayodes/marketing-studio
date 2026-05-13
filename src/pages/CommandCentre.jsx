@@ -10,16 +10,17 @@ import { ActivityFeed } from '../components/ui/ActivityFeed';
 import { cn, formatCurrency, qualityColor } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
 import { useSLATimer } from '../hooks/useSLATimer';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight, TrendingUp, Clock, CheckCircle2, AlertTriangle, ChevronRight,
+  ChevronDown, ChevronUp,
 } from 'lucide-react';
 
-// ─── Shared ────────────────────────────────────────────────────────────────────
+// ─── Animation ────────────────────────────────────────────────────────────────
 
 const FADE_UP = {
-  hidden: { opacity: 0, y: 8 },
-  show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.055, duration: 0.35, ease: [0.16, 1, 0.3, 1] } }),
+  hidden: { opacity: 0, y: 6 },
+  show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] } }),
 };
 
 const LAYER_COLOR = { 1: '#2563EB', 2: '#16A34A', 3: '#7C3AED', 4: '#0891B2' };
@@ -30,41 +31,48 @@ const LAYER_LABEL = {
   4: 'Analytics & Optimisation',
 };
 
-/** Highlighted number span — bold green */
-function N({ children }) {
-  return <strong className="font-bold text-brand-green">{children}</strong>;
-}
+// ─── Shared primitives ────────────────────────────────────────────────────────
 
-/** Thin semi-circle arc progress SVG */
-function ArcProgress({ pct, size = 56, sw = 3, color = '#16A34A' }) {
-  const r = (size - sw * 2) / 2;
-  const cx = size / 2;
-  const cy = size / 2;
-  const arc = Math.PI * r;
-  const filled = arc * Math.min(1, Math.max(0, pct / 100));
-  // sweep-flag=0 → counterclockwise → top half
-  const d = `M ${sw} ${cy} A ${r} ${r} 0 0 0 ${size - sw} ${cy}`;
-  return (
-    <svg width={size} height={cy + sw} className="overflow-visible flex-shrink-0">
-      <path d={d} fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round"
-        className="text-border dark:text-dark-border" />
-      <path d={d} fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round"
-        strokeDasharray={arc} strokeDashoffset={arc - filled}
-        style={{ transition: 'stroke-dashoffset 1.2s ease' }} />
-    </svg>
-  );
+function N({ children }) {
+  return <strong className="font-medium text-brand-green">{children}</strong>;
 }
 
 function SectionHead({ title, sub }) {
   return (
-    <div className="mb-3">
-      <h2 className="text-[11px] font-semibold text-ink dark:text-white">{title}</h2>
-      {sub && <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-px">{sub}</p>}
+    <div className="mb-4">
+      <h2 className="text-[13px] font-medium text-ink dark:text-white">{title}</h2>
+      {sub && <p className="text-[12px] text-ink-faint dark:text-gray-500 mt-0.5">{sub}</p>}
     </div>
   );
 }
 
-// ─── Section 1: Executive Briefing Bar ────────────────────────────────────────
+function Card({ children, className }) {
+  return (
+    <div className={cn('card p-4 flex flex-col gap-2.5', className)}>{children}</div>
+  );
+}
+
+function CardLabel({ children }) {
+  return (
+    <p className="text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] leading-none">
+      {children}
+    </p>
+  );
+}
+
+function CardValue({ children, className }) {
+  return (
+    <span className={cn('text-[22px] font-medium font-mono-nums text-ink dark:text-white leading-none', className)}>
+      {children}
+    </span>
+  );
+}
+
+function CardNote({ children }) {
+  return <p className="text-[11px] text-ink-faint dark:text-gray-500 leading-relaxed">{children}</p>;
+}
+
+// ─── Briefing Bar ─────────────────────────────────────────────────────────────
 
 function BriefingBar({ role }) {
   const gates = useGateStore((s) => s.gates);
@@ -84,26 +92,26 @@ function BriefingBar({ role }) {
         .dark { --briefing-bg:#052e16; --briefing-border:#166534; }
       `}</style>
       <div className="max-w-[1400px] mx-auto flex items-center justify-between gap-6">
-        <p className="text-[11px] text-ink dark:text-green-100 leading-relaxed flex-1">
-          This quarter, your AI content system has produced{' '}
+        <p className="text-[12px] text-ink dark:text-green-100 leading-relaxed flex-1">
+          This quarter your AI content system has produced{' '}
           <N>{QUARTERLY_METRICS.assetsProduced}</N> assets across{' '}
-          <N>{BUSINESS_UNITS.length}</N> Business Units
+          <N>{BUSINESS_UNITS.length}</N> business units
           {showROI && (
-            <> - saving your team an estimated <N>{hoursSaved.toLocaleString()}</N> hours,
+            <> — saving an estimated <N>{hoursSaved.toLocaleString()}</N> hours,
             equivalent to <N>{formatCurrency(QUARTERLY_METRICS.laborValueSaved)}</N> in agency costs</>
           )}.
           {gate2 && remaining && !remaining.overdue && (
-            <> Gate 2 is in review -{' '}
+            <> Gate 2 is in review —{' '}
               <N>{remaining.hours}h {remaining.minutes}m</N> of your {gate2.slaHours}h SLA remaining.
             </>
           )}
           {gate2 && remaining?.overdue && (
-            <> <span className="font-bold text-red-600 dark:text-red-400">Gate 2 SLA overdue.</span></>
+            <> <span className="font-medium text-red-600 dark:text-red-400">Gate 2 SLA overdue.</span></>
           )}
         </p>
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/60 dark:bg-green-900/30 border border-[#BBF7D0] dark:border-[#166534] flex-shrink-0">
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white/60 dark:bg-green-900/30 border border-[#BBF7D0] dark:border-[#166534] flex-shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse" />
-          <span className="text-[10px] font-semibold text-brand-green-dark dark:text-green-400 whitespace-nowrap">
+          <span className="text-[11px] font-medium text-brand-green-dark dark:text-green-400 whitespace-nowrap">
             Live · Q2 2025
           </span>
         </div>
@@ -112,29 +120,7 @@ function BriefingBar({ role }) {
   );
 }
 
-// ─── Section 2: Hero Metrics (6 cards, 3×2 grid) ──────────────────────────────
-
-function Card({ children, className }) {
-  return (
-    <div className={cn('card p-4 flex flex-col gap-2', className)}>{children}</div>
-  );
-}
-
-function CardLabel({ children }) {
-  return <p className="text-[10px] font-medium text-ink-muted dark:text-gray-400 uppercase tracking-wider leading-none">{children}</p>;
-}
-
-function CardValue({ children, className }) {
-  return (
-    <span className={cn('text-[18px] font-semibold font-mono-nums text-ink dark:text-white leading-none', className)}>
-      {children}
-    </span>
-  );
-}
-
-function CardExplanation({ children }) {
-  return <p className="text-[9px] text-ink-faint dark:text-gray-500 leading-relaxed">{children}</p>;
-}
+// ─── Hero Metrics ─────────────────────────────────────────────────────────────
 
 function HeroMetrics({ role }) {
   const assets = useContentStore((s) => s.assets);
@@ -164,57 +150,72 @@ function HeroMetrics({ role }) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
 
-      {/* 1 — Assets Produced */}
+      {/* Assets Produced */}
       <motion.div custom={0} variants={FADE_UP} initial="hidden" animate="show">
         <Card>
-          <CardLabel>Assets Produced This Quarter</CardLabel>
-          <div className="flex items-baseline gap-1.5">
+          <CardLabel>Assets Produced</CardLabel>
+          <div className="flex items-baseline gap-2">
             <CardValue>{assetsUp}</CardValue>
-            <span className="text-[10px] text-ink-muted dark:text-gray-400">
-              of {QUARTERLY_METRICS.assetsTarget} target
-            </span>
+            <span className="text-[12px] text-ink-faint dark:text-gray-500">of {QUARTERLY_METRICS.assetsTarget}</span>
           </div>
-          <div className="flex items-center gap-1 text-brand-green text-[10px]">
-            <TrendingUp size={10} />
+          <div className="flex items-center gap-1.5 text-brand-green text-[11px]">
+            <TrendingUp size={11} strokeWidth={1.5} />
             <span>+{dailyAssets} since yesterday</span>
           </div>
-          <div className="w-full h-px bg-border dark:bg-dark-border rounded-full overflow-hidden">
+          <div className="w-full h-1 bg-border dark:bg-dark-border rounded-full overflow-hidden">
             <div className="h-full bg-brand-green rounded-full transition-all duration-1000"
               style={{ width: `${completionPct}%` }} />
           </div>
-          <CardExplanation>
-            Every piece of content your AI agents have completed and passed quality checks this quarter.
-          </CardExplanation>
+          <CardNote>All content completed and passed quality checks this quarter.</CardNote>
         </Card>
       </motion.div>
 
-      {/* 2 — Completion Rate */}
+      {/* Target Progress */}
       <motion.div custom={1} variants={FADE_UP} initial="hidden" animate="show">
         <Card>
-          <CardLabel>Quarterly Target Progress</CardLabel>
-          <div className="flex items-end justify-between gap-2">
-            <div className="flex flex-col gap-1.5">
+          <CardLabel>Quarterly Target</CardLabel>
+          <div className="flex items-center justify-between gap-4 flex-1">
+            <div className="flex flex-col gap-2">
               <CardValue>{pctUp}%</CardValue>
-              <CardExplanation>How far through the Q2 content programme you are.</CardExplanation>
+              <CardNote>How far through the Q2 content programme you are.</CardNote>
+              <CardNote>
+                {QUARTERLY_METRICS.assetsProduced} of {QUARTERLY_METRICS.assetsTarget} assets complete.
+              </CardNote>
             </div>
-            {/* <ArcProgress pct={completionPct} size={64} sw={4} /> */}
+            {/* Circular progress ring */}
+            <svg width="64" height="64" viewBox="0 0 64 64" className="flex-shrink-0 -mr-1">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="#E5E7EB" strokeWidth="5" className="dark:stroke-dark-border" />
+              <circle
+                cx="32" cy="32" r="26"
+                fill="none"
+                stroke="#16A34A"
+                strokeWidth="5"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 26}`}
+                strokeDashoffset={`${2 * Math.PI * 26 * (1 - completionPct / 100)}`}
+                style={{ transition: 'stroke-dashoffset 1.2s cubic-bezier(0.16,1,0.3,1)', transformOrigin: 'center', transform: 'rotate(-90deg)' }}
+              />
+              <text x="32" y="36" textAnchor="middle" fontSize="12" fontWeight="500" fontFamily="IBM Plex Mono, monospace" fill="#16A34A">
+                {completionPct}%
+              </text>
+            </svg>
           </div>
         </Card>
       </motion.div>
 
-      {/* 3 — Agency Cost Saved */}
+      {/* Agency Cost / Gate Rate */}
       {showROI ? (
         <motion.div custom={2} variants={FADE_UP} initial="hidden" animate="show">
           <Card className="bg-brand-green-light dark:bg-green-900/10 border-brand-green/20">
             <CardLabel>Agency Cost Avoided</CardLabel>
             <CardValue className="text-brand-green">{formatCurrency(laborUp)}</CardValue>
-            <div className="flex items-center gap-1 text-brand-green text-[10px]">
-              <TrendingUp size={10} />
+            <div className="flex items-center gap-1.5 text-brand-green text-[11px]">
+              <TrendingUp size={11} strokeWidth={1.5} />
               <span>+{formatCurrency(dailyValue)} today</span>
             </div>
-            <p className="text-[9px] text-ink-muted dark:text-green-200/60 leading-relaxed">
-              At ~{formatCurrency(Math.round(QUARTERLY_METRICS.laborValueSaved / QUARTERLY_METRICS.assetsProduced))} avg per asset vs external agency rates.
-            </p>
+            <CardNote>
+              At ~{formatCurrency(Math.round(QUARTERLY_METRICS.laborValueSaved / QUARTERLY_METRICS.assetsProduced))} per asset vs external agency rates.
+            </CardNote>
           </Card>
         </motion.div>
       ) : (
@@ -222,44 +223,42 @@ function HeroMetrics({ role }) {
           <Card>
             <CardLabel>Gate Approval Rate</CardLabel>
             <CardValue className="text-brand-green">{QUARTERLY_METRICS.gateApprovalRate}%</CardValue>
-            <CardExplanation>Of submitted items approved at first pass — no revisions required.</CardExplanation>
+            <CardNote>Items approved at first pass — no revisions required.</CardNote>
           </Card>
         </motion.div>
       )}
 
-      {/* 4 — Avg Quality Score */}
+      {/* Quality Score */}
       <motion.div custom={3} variants={FADE_UP} initial="hidden" animate="show">
         <Card>
-          <CardLabel>Average Quality Score</CardLabel>
-          <div className="flex items-baseline gap-1">
+          <CardLabel>Avg Quality Score</CardLabel>
+          <div className="flex items-baseline gap-1.5">
             <CardValue className={qualityColor(QUARTERLY_METRICS.qualityAverage)}>{qualUp}</CardValue>
-            <span className="text-[11px] text-ink-muted dark:text-gray-400">/100</span>
+            <span className="text-[12px] text-ink-faint dark:text-gray-500">/100</span>
           </div>
-          <p className="text-[10px] text-ink-faint dark:text-gray-500">SEO · Brand · GEO · AI Detection</p>
-          <CardExplanation>
-            Composite score across all quality dimensions checked by the Quality Gate Agent.
-          </CardExplanation>
+          <p className="text-[11px] text-ink-faint dark:text-gray-500">SEO · Brand · GEO · AI Detection</p>
+          <CardNote>Composite score across all dimensions checked by the Quality Gate Agent.</CardNote>
         </Card>
       </motion.div>
 
-      {/* 5 — GEO Readiness */}
+      {/* GEO */}
       <motion.div custom={4} variants={FADE_UP} initial="hidden" animate="show">
         <Card>
-          <CardLabel>GEO Readiness Score</CardLabel>
+          <CardLabel>GEO Readiness</CardLabel>
           <div className="flex items-baseline gap-2">
             <CardValue className="text-brand-green">{geoUp}%</CardValue>
-            <span className="inline-flex items-center px-1.5 py-px rounded text-[8px] font-bold tracking-wide bg-brand-green text-white leading-none">
+            <span className="inline-flex items-center px-1.5 py-px rounded text-[9px] font-medium tracking-wide bg-brand-green text-white leading-none">
               NEW
             </span>
           </div>
-          <p className="text-[10px] text-ink-faint dark:text-gray-500">Citation potential for AI systems</p>
-          <CardExplanation>
+          <p className="text-[11px] text-ink-faint dark:text-gray-500">Citation potential for AI systems</p>
+          <CardNote>
             How likely this content is to be cited by ChatGPT, Claude, Perplexity, and Gemini.
-          </CardExplanation>
+          </CardNote>
         </Card>
       </motion.div>
 
-      {/* 6 — Gate Status */}
+      {/* Gate Status */}
       <motion.div custom={5} variants={FADE_UP} initial="hidden" animate="show">
         <Card className={cn(isOverdue && 'border-red-400 dark:border-red-700 bg-red-50/40 dark:bg-red-900/10')}>
           <CardLabel>Current Gate</CardLabel>
@@ -269,31 +268,29 @@ function HeroMetrics({ role }) {
                 <CardValue className={cn(isOverdue ? 'text-red-600 dark:text-red-400' : 'text-ink dark:text-white')}>
                   Gate {activeGate.number}
                 </CardValue>
-                <span className="text-[10px] text-ink-muted dark:text-gray-400">of 4</span>
+                <span className="text-[12px] text-ink-faint dark:text-gray-500">of 4</span>
               </div>
               {gateRemaining && (
                 isOverdue ? (
-                  <span className="flex items-center gap-1 text-[10px] font-bold text-red-600 dark:text-red-400">
-                    <AlertTriangle size={11} /> OVERDUE
+                  <span className="flex items-center gap-1.5 text-[12px] font-medium text-red-600 dark:text-red-400">
+                    <AlertTriangle size={12} /> OVERDUE
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-400 font-mono-nums">
-                    <Clock size={10} />
+                  <span className="flex items-center gap-1.5 text-[12px] text-amber-600 dark:text-amber-400 font-mono-nums">
+                    <Clock size={11} strokeWidth={1.5} />
                     {gateRemaining.hours}h {gateRemaining.minutes}m remaining
                   </span>
                 )
               )}
-              <CardExplanation>
-                The current approval stage. All 4 gates must be passed before content publishes.
-              </CardExplanation>
+              <CardNote>Current approval stage. All 4 gates must pass before content publishes.</CardNote>
             </>
           ) : (
             <>
               <div className="flex items-center gap-1.5 text-brand-green mt-1">
-                <CheckCircle2 size={14} />
-                <span className="text-[11px] font-semibold">All gates passed</span>
+                <CheckCircle2 size={14} strokeWidth={1.5} />
+                <span className="text-[13px] font-medium">All gates passed</span>
               </div>
-              <CardExplanation>Content has cleared all approval gates this quarter.</CardExplanation>
+              <CardNote>Content has cleared all approval gates this quarter.</CardNote>
             </>
           )}
         </Card>
@@ -302,7 +299,7 @@ function HeroMetrics({ role }) {
   );
 }
 
-// ─── Section 3: BU Progress Strip ─────────────────────────────────────────────
+// ─── BU Progress Strip ────────────────────────────────────────────────────────
 
 function BUProgressStrip({ selectedBU, onSelectBU }) {
   const gates = useGateStore((s) => s.gates);
@@ -334,25 +331,25 @@ function BUProgressStrip({ selectedBU, onSelectBU }) {
               )}
             >
               {active && (
-                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-card"
+                <div className="absolute top-0 left-0 right-0 h-0.5"
                   style={{ backgroundColor: cfg?.color }} />
               )}
-              <div className="flex items-center gap-1.5 mb-2">
+              <div className="flex items-center gap-2 mb-2.5">
                 <span className="w-2 h-2 rounded-full flex-shrink-0"
                   style={{ backgroundColor: cfg?.color || '#6B7280' }} />
-                <span className="text-[10px] font-semibold text-ink dark:text-white truncate">{bu.buName}</span>
+                <span className="text-[11px] font-medium text-ink dark:text-white truncate">{bu.buName}</span>
               </div>
-              <div className="flex items-end justify-between mb-1">
-                <span className="text-[18px] font-semibold font-mono-nums text-ink dark:text-white leading-none">
+              <div className="flex items-end justify-between mb-1.5">
+                <span className="text-[20px] font-medium font-mono-nums text-ink dark:text-white leading-none">
                   {bu.assetsPublished}
                 </span>
-                <span className="text-[9px] text-ink-faint dark:text-gray-500 mb-0.5">/ 62</span>
+                <span className="text-[11px] text-ink-faint dark:text-gray-500 mb-px">/ 62</span>
               </div>
-              <div className="w-full h-px bg-border dark:bg-dark-border rounded-full overflow-hidden mb-1.5">
+              <div className="w-full h-1 bg-border dark:bg-dark-border rounded-full overflow-hidden mb-2">
                 <div className="h-full rounded-full transition-all duration-700"
                   style={{ width: `${bu.completionPct}%`, backgroundColor: cfg?.color || '#16A34A' }} />
               </div>
-              <p className="text-[9px] text-ink-faint dark:text-gray-500">
+              <p className="text-[10px] text-ink-faint dark:text-gray-500">
                 Gate {activeGate?.number} · {gateLabel}
               </p>
             </motion.button>
@@ -363,56 +360,114 @@ function BUProgressStrip({ selectedBU, onSelectBU }) {
   );
 }
 
-// ─── Section 4: Live Activity + Gate Quick-Action ─────────────────────────────
+// ─── Gate Action Card ─────────────────────────────────────────────────────────
 
 function GateActionCard({ gate }) {
   const navigate = useNavigate();
+  const assets = useContentStore((s) => s.assets);
+  const [expanded, setExpanded] = useState(false);
   const remaining = useSLATimer(gate.slaDeadline);
   const pct = gate.itemsCount > 0 ? (gate.itemsApproved / gate.itemsCount) * 100 : 0;
 
+  const pendingAssets = useMemo(
+    () => assets.filter((a) => a.status === `${gate.id}-pending`),
+    [assets, gate.id]
+  );
+
   return (
-    <div className="card p-4 flex flex-col h-full">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="badge bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+    <div className="card p-4">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-3">
+        <span className="badge bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px]">
           Gate {gate.number}
         </span>
-        <span className="text-[11px] font-semibold text-ink dark:text-white">{gate.name}</span>
+        <span className="text-[13px] font-medium text-ink dark:text-white">{gate.name}</span>
       </div>
 
+      {/* SLA */}
       {remaining && !remaining.overdue && (
-        <p className="text-[10px] text-amber-600 dark:text-amber-400 flex items-center gap-1 mb-2">
-          <Clock size={10} />
-          {remaining.hours}h {remaining.minutes}m remaining
-          · {gate.itemsCount - gate.itemsApproved} assets awaiting
-        </p>
+        <div className="flex items-center gap-2 mb-3">
+          <Clock size={12} className="text-amber-500" strokeWidth={1.5} />
+          <span className="text-[12px] text-amber-600 dark:text-amber-400 font-mono-nums">
+            {remaining.hours}h {remaining.minutes}m remaining
+          </span>
+          <span className="text-[11px] text-ink-faint dark:text-gray-500">
+            · {gate.itemsCount - gate.itemsApproved} awaiting
+          </span>
+        </div>
       )}
 
-      <div className="mb-2">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-[10px] text-ink-muted dark:text-gray-400">
+      {/* Progress */}
+      <div className="mb-3">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-[11px] text-ink-faint dark:text-gray-500">
             {gate.itemsApproved} of {gate.itemsCount} reviewed
           </span>
-          <span className="text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{Math.round(pct)}%</span>
+          <span className="text-[11px] font-mono-nums text-ink-faint dark:text-gray-500">{Math.round(pct)}%</span>
         </div>
-        <div className="w-full h-px bg-border dark:bg-dark-border rounded-full overflow-hidden">
+        <div className="w-full h-1 bg-border dark:bg-dark-border rounded-full overflow-hidden">
           <div className="h-full bg-amber-400 rounded-full transition-all duration-700"
             style={{ width: `${pct}%` }} />
         </div>
       </div>
 
-      <p className="text-[10px] text-ink-muted dark:text-gray-400 leading-relaxed flex-1">
-        {gate.description}
-      </p>
+      {/* Expandable asset list */}
+      {pendingAssets.length > 0 && (
+        <div className="mb-3">
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="flex items-center gap-1.5 text-[11px] text-ink-faint dark:text-gray-500 hover:text-ink dark:hover:text-white transition-colors mb-2"
+          >
+            {expanded ? <ChevronUp size={11} strokeWidth={1.5} /> : <ChevronDown size={11} strokeWidth={1.5} />}
+            {expanded ? 'Hide' : `Show ${pendingAssets.length} pending asset${pendingAssets.length !== 1 ? 's' : ''}`}
+          </button>
+
+          <AnimatePresence>
+            {expanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                className="overflow-hidden"
+              >
+                <div className="border border-border dark:border-dark-border rounded divide-y divide-border dark:divide-dark-border overflow-hidden">
+                  {pendingAssets.slice(0, 5).map((asset) => (
+                    <div key={asset.id} className="flex items-center justify-between gap-3 px-3 py-2 bg-surface-subtle dark:bg-dark-bg">
+                      <div className="min-w-0">
+                        <p className="text-[11px] font-medium text-ink dark:text-white truncate max-w-[160px]">{asset.title}</p>
+                        <p className="text-[10px] text-ink-faint dark:text-gray-500">{asset.buAbbr} · {asset.typeName}</p>
+                      </div>
+                      <span className={cn('text-[11px] font-mono-nums font-medium flex-shrink-0', qualityColor(asset.qualityScores?.overall ?? 0))}>
+                        {asset.qualityScores?.overall ?? '—'}
+                      </span>
+                    </div>
+                  ))}
+                  {pendingAssets.length > 5 && (
+                    <div className="px-3 py-1.5 bg-surface-subtle dark:bg-dark-bg">
+                      <span className="text-[10px] text-ink-faint dark:text-gray-500">
+                        +{pendingAssets.length - 5} more
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
 
       <button
         onClick={() => navigate('/gates')}
-        className="mt-3 w-full flex items-center justify-center gap-1.5 bg-brand-green text-white text-[10px] font-semibold px-3 py-2 rounded-btn hover:bg-brand-green-dark transition-colors"
+        className="w-full flex items-center justify-center gap-2 bg-brand-green text-white text-[12px] font-medium px-3 py-2 rounded hover:bg-brand-green-dark transition-colors"
       >
-        Review Now <ArrowRight size={11} />
+        Review Now <ArrowRight size={12} strokeWidth={1.5} />
       </button>
     </div>
   );
 }
+
+// ─── Last Published ───────────────────────────────────────────────────────────
 
 function LastPublishedPreview() {
   const assets = useContentStore((s) => s.assets);
@@ -426,35 +481,30 @@ function LastPublishedPreview() {
   if (!last) return null;
 
   return (
-    <div className="card p-4 h-full">
-      <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-2">
+    <div className="card p-4">
+      <p className="text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-2.5">
         Last Published
       </p>
-      <p className="text-[10px] font-semibold text-ink dark:text-white leading-snug mb-1.5 line-clamp-3">
+      <p className="text-[12px] font-medium text-ink dark:text-white leading-snug mb-2 line-clamp-3">
         {last.title}
       </p>
       <div className="flex items-center gap-1.5 flex-wrap">
-        <span className="badge bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400">
-          {last.buAbbr}
-        </span>
-        <span className="badge bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400">
-          {last.typeName}
-        </span>
+        <span className="badge bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400">{last.buAbbr}</span>
+        <span className="badge bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400">{last.typeName}</span>
         {last.qualityScores?.overall && (
-          <span className={cn('text-[10px] font-mono-nums font-semibold', qualityColor(last.qualityScores.overall))}>
+          <span className={cn('text-[11px] font-mono-nums font-medium', qualityColor(last.qualityScores.overall))}>
             {last.qualityScores.overall}/100
           </span>
         )}
       </div>
-      <Link
-        to="/content"
-        className="mt-3 flex items-center gap-1 text-[10px] text-brand-green font-medium hover:opacity-80"
-      >
-        View in Content Tracker <ArrowRight size={10} />
+      <Link to="/content" className="mt-3 flex items-center gap-1 text-[11px] text-brand-green font-medium hover:opacity-80">
+        View in Content Tracker <ArrowRight size={10} strokeWidth={1.5} />
       </Link>
     </div>
   );
 }
+
+// ─── Activity Section ─────────────────────────────────────────────────────────
 
 function ActivitySection() {
   const gates = useGateStore((s) => s.gates);
@@ -463,7 +513,7 @@ function ActivitySection() {
   return (
     <div>
       <SectionHead title="Live Activity" sub="What the agents are doing right now" />
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 items-start">
         <div className="lg:col-span-3 card p-4 overflow-hidden">
           <ActivityFeed maxItems={8} />
         </div>
@@ -475,7 +525,7 @@ function ActivitySection() {
   );
 }
 
-// ─── Section 5: Agent Health (role-gated) ─────────────────────────────────────
+// ─── Agent Health ─────────────────────────────────────────────────────────────
 
 function AgentHealthSection() {
   const agentStates = useAgentStore((s) => s.agentStates);
@@ -508,37 +558,37 @@ function AgentHealthSection() {
             onClick={() => navigate('/pipeline')}
             className="card p-3 text-left hover:shadow-card-hover transition-all duration-200 group"
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-2.5">
               <div className="flex items-center gap-1.5">
                 <span className={cn(
                   'w-1.5 h-1.5 rounded-full flex-shrink-0',
                   l.health === 'active' ? 'bg-brand-green animate-pulse' :
                   l.health === 'error' ? 'bg-red-500 animate-pulse' : 'bg-agent-idle'
                 )} />
-                <span className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500">
+                <span className="text-[10px] font-medium uppercase tracking-[0.06em] text-ink-faint dark:text-gray-500">
                   L{l.layer}
                 </span>
               </div>
-              <span className="text-[9px] text-ink-faint dark:text-gray-500">{l.count} agents</span>
+              <span className="text-[10px] text-ink-faint dark:text-gray-500">{l.count} agents</span>
             </div>
 
-            <p className="text-[10px] font-semibold mb-1" style={{ color: l.color }}>
+            <p className="text-[12px] font-medium mb-1" style={{ color: l.color }}>
               {l.label}
             </p>
 
-            <p className="text-[10px] text-ink-muted dark:text-gray-400">
+            <p className="text-[11px] text-ink-muted dark:text-gray-400">
               {l.health === 'active' ? `${l.running} active` :
                l.health === 'error' ? `${l.errors} error` : 'Idle'}
             </p>
 
             {l.last && (
-              <p className="text-[9px] text-ink-faint dark:text-gray-500 truncate mt-1">
+              <p className="text-[10px] text-ink-faint dark:text-gray-500 truncate mt-1">
                 {l.last.agentName} · {l.last.action}
               </p>
             )}
 
-            <div className="flex items-center gap-1 mt-2 text-[9px] text-brand-green opacity-0 group-hover:opacity-100 transition-opacity">
-              View pipeline <ChevronRight size={10} />
+            <div className="flex items-center gap-1 mt-2.5 text-[10px] text-brand-green opacity-0 group-hover:opacity-100 transition-opacity">
+              View pipeline <ChevronRight size={10} strokeWidth={1.5} />
             </div>
           </motion.button>
         ))}
@@ -547,16 +597,13 @@ function AgentHealthSection() {
   );
 }
 
-// ─── Content Editor: Review Queue ─────────────────────────────────────────────
+// ─── Editor Review Queue ──────────────────────────────────────────────────────
 
 function EditorReviewQueue() {
   const assets = useContentStore((s) => s.assets);
   const navigate = useNavigate();
 
-  const queue = useMemo(
-    () => assets.filter((a) => a.status === 'gate-2-pending'),
-    [assets]
-  );
+  const queue = useMemo(() => assets.filter((a) => a.status === 'gate-2-pending'), [assets]);
   const preview = queue.slice(0, 5);
 
   return (
@@ -568,8 +615,8 @@ function EditorReviewQueue() {
       <div className="card overflow-hidden">
         {queue.length === 0 ? (
           <div className="p-8 text-center">
-            <CheckCircle2 size={20} className="text-brand-green mx-auto mb-2" />
-            <p className="text-[11px] font-medium text-ink-muted dark:text-gray-400">Review queue is clear</p>
+            <CheckCircle2 size={18} className="text-brand-green mx-auto mb-2" strokeWidth={1.5} />
+            <p className="text-[12px] font-medium text-ink-muted dark:text-gray-400">Review queue is clear</p>
           </div>
         ) : (
           <>
@@ -577,14 +624,14 @@ function EditorReviewQueue() {
               {preview.map((a) => (
                 <div key={a.id} className="px-4 py-2.5 flex items-center justify-between gap-3 hover:bg-surface-muted dark:hover:bg-dark-card/40">
                   <div className="min-w-0">
-                    <p className="text-[10px] font-medium text-ink dark:text-white truncate">{a.title}</p>
+                    <p className="text-[12px] font-medium text-ink dark:text-white truncate">{a.title}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span className="badge bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400">{a.buAbbr}</span>
-                      <span className="text-[9px] text-ink-faint dark:text-gray-500">{a.typeName}</span>
+                      <span className="text-[10px] text-ink-faint dark:text-gray-500">{a.typeName}</span>
                     </div>
                   </div>
                   {a.qualityScores?.overall && (
-                    <span className={cn('text-[10px] font-mono-nums font-semibold flex-shrink-0', qualityColor(a.qualityScores.overall))}>
+                    <span className={cn('text-[11px] font-mono-nums font-medium flex-shrink-0', qualityColor(a.qualityScores.overall))}>
                       {a.qualityScores.overall}/100
                     </span>
                   )}
@@ -595,9 +642,9 @@ function EditorReviewQueue() {
               <div className="px-4 py-2 border-t border-border dark:border-dark-border">
                 <button
                   onClick={() => navigate('/gates')}
-                  className="text-[10px] text-brand-green font-medium flex items-center gap-1 hover:opacity-80"
+                  className="text-[11px] text-brand-green font-medium flex items-center gap-1 hover:opacity-80"
                 >
-                  View all {queue.length} items in Gate Manager <ArrowRight size={10} />
+                  View all {queue.length} items <ArrowRight size={10} strokeWidth={1.5} />
                 </button>
               </div>
             )}
@@ -621,8 +668,7 @@ export default function CommandCentre() {
   return (
     <div className="flex flex-col min-h-full">
       <BriefingBar role={role} />
-
-      <div className="p-4 space-y-5 max-w-[1400px] mx-auto w-full">
+      <div className="p-5 space-y-6 max-w-[1400px] mx-auto w-full">
         {showMetrics && <HeroMetrics role={role} />}
         <BUProgressStrip selectedBU={selectedBU} onSelectBU={setSelectedBU} />
         <ActivitySection />

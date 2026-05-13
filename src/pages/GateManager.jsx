@@ -21,7 +21,7 @@ function GateTimeline({ gates, activeId }) {
         const isActive = gate.status === 'active';
         const isLast = i === gates.length - 1;
 
-        const circleBase = 'w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 transition-all duration-300 border-2';
+        const circleBase = 'w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium flex-shrink-0 transition-all duration-300 border-2';
         const circleStyle = isCompleted
           ? 'bg-brand-green border-brand-green text-white'
           : isActive
@@ -35,7 +35,7 @@ function GateTimeline({ gates, activeId }) {
                 {isCompleted ? <CheckCircle2 size={14} /> : gate.number}
               </div>
               <p className={cn(
-                'text-[10px] font-semibold mt-1.5 whitespace-nowrap',
+                'text-[10px] font-medium mt-1.5 whitespace-nowrap',
                 isActive ? 'text-amber-600 dark:text-amber-400' : isCompleted ? 'text-brand-green' : 'text-ink-faint dark:text-gray-500'
               )}>
                 {gate.name}
@@ -88,9 +88,9 @@ function RevisionModal({ asset, open, onClose, onSubmit }) {
     <Dialog.Root open={open} onOpenChange={v => !v && onClose()}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50 backdrop-blur-[1px]" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-dark-card border border-border dark:border-dark-border rounded-[12px] shadow-xl z-50 w-[440px] max-w-[90vw] p-4 space-y-3">
+        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-dark-card border border-border dark:border-dark-border rounded shadow-xl z-50 w-[440px] max-w-[90vw] p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <Dialog.Title className="text-[11px] font-semibold text-ink dark:text-white">
+            <Dialog.Title className="text-[13px] font-medium text-ink dark:text-white">
               Request Revision
             </Dialog.Title>
             <Dialog.Close asChild>
@@ -102,13 +102,13 @@ function RevisionModal({ asset, open, onClose, onSubmit }) {
 
           {asset && (
             <div className="pb-3 border-b border-border dark:border-dark-border">
-              <p className="text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider mb-0.5">Asset</p>
-              <p className="text-[10px] text-ink-muted dark:text-gray-400 truncate">{asset.title}</p>
+              <p className="text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-0.5">Asset</p>
+              <p className="text-[11px] text-ink-muted dark:text-gray-400 truncate">{asset.title}</p>
             </div>
           )}
 
           <div>
-            <label className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 block mb-1.5">
+            <label className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 block mb-1.5">
               Revision note for the agent
             </label>
             <textarea
@@ -116,7 +116,7 @@ function RevisionModal({ asset, open, onClose, onSubmit }) {
               onChange={e => setNote(e.target.value)}
               rows={4}
               placeholder="Describe the changes needed — the agent will receive this as a revision brief and regenerate the content accordingly..."
-              className="w-full text-[10px] bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded-[6px] px-2.5 py-2 text-ink dark:text-white placeholder:text-ink-faint dark:placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-brand-green resize-none"
+              className="w-full text-[11px] bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded px-2.5 py-2 text-ink dark:text-white placeholder:text-ink-faint dark:placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-brand-green resize-none"
             />
           </div>
 
@@ -124,7 +124,7 @@ function RevisionModal({ asset, open, onClose, onSubmit }) {
             <button
               onClick={handleSubmit}
               disabled={!note.trim()}
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-brand-green text-white rounded-[6px] text-[10px] font-semibold hover:bg-green-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-brand-green text-white rounded text-[11px] font-medium hover:bg-green-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <RotateCcw size={10} />
               Send to Agent
@@ -178,7 +178,7 @@ function AssetReviewQueue({ gate, canApprove }) {
           <thead>
             <tr className="bg-surface-muted dark:bg-dark-border">
               {['Title', 'Type', 'Quality', 'Awaiting', 'Actions'].map(h => (
-                <th key={h} className="text-left px-3 py-1.5 text-[9px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                <th key={h} className="text-left px-3 py-1.5 text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] whitespace-nowrap">
                   {h}
                 </th>
               ))}
@@ -196,16 +196,16 @@ function AssetReviewQueue({ gate, canApprove }) {
               return (
                 <tr key={asset.id} className={cn('transition-colors', isFlagged && 'bg-amber-50/60 dark:bg-amber-900/10')}>
                   <td className="px-3 py-2">
-                    <p className="text-[10px] font-medium text-ink dark:text-white max-w-[240px] truncate">{asset.title}</p>
+                    <p className="text-[11px] font-medium text-ink dark:text-white max-w-[240px] truncate">{asset.title}</p>
                   </td>
-                  <td className="px-3 py-2 text-[9px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.typeName}</td>
+                  <td className="px-3 py-2 text-[10px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.typeName}</td>
                   <td className="px-3 py-2">
                     {q != null
-                      ? <span className={cn('text-[9px] font-mono font-semibold px-1.5 py-px rounded-full', qCls)}>{q}</span>
-                      : <span className="text-ink-faint text-[9px]">—</span>
+                      ? <span className={cn('text-[10px] font-mono font-medium px-1.5 py-px rounded', qCls)}>{q}</span>
+                      : <span className="text-ink-faint text-[10px]">—</span>
                     }
                   </td>
-                  <td className="px-3 py-2 text-[9px] text-ink-muted dark:text-gray-400 whitespace-nowrap">
+                  <td className="px-3 py-2 text-[10px] text-ink-muted dark:text-gray-400 whitespace-nowrap">
                     {reviewer?.name}
                   </td>
                   <td className="px-3 py-2">
@@ -213,14 +213,14 @@ function AssetReviewQueue({ gate, canApprove }) {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => handleApprove(asset)}
-                          className="flex items-center gap-0.5 px-1.5 py-0.5 bg-brand-green text-white rounded text-[9px] font-medium hover:bg-green-700 transition-colors"
+                          className="flex items-center gap-0.5 px-1.5 py-0.5 bg-brand-green text-white rounded text-[10px] font-medium hover:bg-green-700 transition-colors"
                         >
                           <Check size={9} />
                           Approve
                         </button>
                         <button
                           onClick={() => setRevisionTarget(asset)}
-                          className="flex items-center gap-0.5 px-1.5 py-0.5 bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded text-[9px] text-ink-muted dark:text-gray-400 hover:bg-border transition-colors"
+                          className="flex items-center gap-0.5 px-1.5 py-0.5 bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border rounded text-[10px] text-ink-muted dark:text-gray-400 hover:bg-border transition-colors"
                         >
                           <RotateCcw size={9} />
                           Revise
@@ -284,7 +284,7 @@ function GateCard({ gate, canApprove }) {
 
   return (
     <div className={cn(
-      'rounded-[10px] border bg-white dark:bg-dark-card overflow-hidden transition-all duration-200',
+      'rounded border bg-white dark:bg-dark-card overflow-hidden transition-all duration-200',
       borderColor,
       gate.status === 'active' && 'shadow-card'
     )}
@@ -299,14 +299,14 @@ function GateCard({ gate, canApprove }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className={cn(
-                'text-[9px] font-bold px-1.5 py-px rounded-full',
+                'text-[10px] font-medium px-1.5 py-px rounded',
                 gate.status === 'active' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
                 : gate.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-brand-green dark:text-green-400'
                 : 'bg-surface-muted dark:bg-dark-border text-ink-faint dark:text-gray-500'
               )}>
                 Gate {gate.number}
               </span>
-              <h3 className="text-[11px] font-semibold text-ink dark:text-white">{gate.name}</h3>
+              <h3 className="text-[12px] font-medium text-ink dark:text-white">{gate.name}</h3>
               {gate.status === 'pending' && <Lock size={11} className="text-gray-400 flex-shrink-0" />}
             </div>
             <p className="text-[10px] text-ink-muted dark:text-gray-400 leading-relaxed max-w-2xl">{gate.description}</p>
@@ -325,10 +325,10 @@ function GateCard({ gate, canApprove }) {
         {/* Progress bar */}
         <div className="mt-2.5">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[9px] text-ink-muted dark:text-gray-400">
-              <span className="font-mono-nums font-semibold text-ink dark:text-white">{gate.itemsApproved}</span> of {gate.itemsCount} approved
+            <span className="text-[10px] text-ink-muted dark:text-gray-400">
+              <span className="font-mono-nums font-medium text-ink dark:text-white">{gate.itemsApproved}</span> of {gate.itemsCount} approved
             </span>
-            <span className="text-[9px] font-mono-nums text-ink-muted dark:text-gray-400">{Math.round(pct)}%</span>
+            <span className="text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{Math.round(pct)}%</span>
           </div>
           <div className="w-full h-px bg-border dark:bg-dark-border rounded-full overflow-hidden">
             <div
@@ -372,13 +372,13 @@ function GateCard({ gate, canApprove }) {
                 <div className="px-4 py-3 flex items-center justify-between">
                   <div className="flex items-center gap-2 text-brand-green">
                     <CheckCircle2 size={14} />
-                    <span className="text-[10px] font-semibold text-brand-green">All {gate.itemsCount} items approved</span>
+                    <span className="text-[11px] font-medium text-brand-green">All {gate.itemsCount} items approved</span>
                   </div>
                   <div className="flex items-center gap-3">
                     {gate.approvers.map(a => (
                       <div key={a.name} className="flex items-center gap-1.5">
                         <div className="w-5 h-5 rounded-full bg-brand-green/15 border border-brand-green/30 flex items-center justify-center">
-                          <span className="text-[7px] font-bold text-brand-green">{a.avatar}</span>
+                          <span className="text-[8px] font-medium text-brand-green">{a.avatar}</span>
                         </div>
                         <span className="text-[9px] text-ink-muted dark:text-gray-400">{a.name}</span>
                       </div>
@@ -394,12 +394,12 @@ function GateCard({ gate, canApprove }) {
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1.5 mr-2">
                       <Users size={12} className="text-ink-faint dark:text-gray-500" />
-                      <span className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500">Reviewers</span>
+                      <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500">Reviewers</span>
                     </div>
                     {gate.approvers.map(a => (
                       <div key={a.name} className="flex items-center gap-1.5">
                         <div className="w-5 h-5 rounded-full bg-surface-muted dark:bg-dark-border border border-border dark:border-dark-border flex items-center justify-center flex-shrink-0">
-                          <span className="text-[7px] font-bold text-ink-muted dark:text-gray-400">{a.avatar}</span>
+                          <span className="text-[8px] font-medium text-ink-muted dark:text-gray-400">{a.avatar}</span>
                         </div>
                         <div>
                           <p className="text-[9px] font-medium text-ink dark:text-white leading-none">{a.name}</p>
@@ -411,7 +411,7 @@ function GateCard({ gate, canApprove }) {
 
                   {/* Asset review queue */}
                   <div>
-                    <p className="text-[9px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-2">Asset Review Queue</p>
+                    <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-2">Asset Review Queue</p>
                     <AssetReviewQueue gate={gate} canApprove={canApprove} />
                   </div>
 
@@ -422,10 +422,10 @@ function GateCard({ gate, canApprove }) {
                         initial={{ opacity: 0, y: -4 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
-                        className="flex items-center gap-2 px-3 py-2 bg-brand-green-light dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-[8px]"
+                        className="flex items-center gap-2 px-3 py-2 bg-brand-green-light dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded"
                       >
                         <CheckCircle2 size={13} className="text-brand-green flex-shrink-0" />
-                        <p className="text-[10px] font-semibold text-brand-green-dark dark:text-green-400">
+                        <p className="text-[11px] font-medium text-brand-green-dark dark:text-green-400">
                           Gate {gate.number} Approved — {gate.number < 4 ? `Gate ${gate.number + 1} unlocked` : 'Distribution Agent activated'}
                         </p>
                       </motion.div>
@@ -440,7 +440,7 @@ function GateCard({ gate, canApprove }) {
                           onClick={handleApproveGate}
                           disabled={!allReviewed}
                           className={cn(
-                            'flex-1 flex items-center justify-center gap-2 py-2 rounded-[8px] text-[10px] font-semibold transition-all',
+                            'flex-1 flex items-center justify-center gap-2 py-2 rounded text-[11px] font-medium transition-all',
                             allReviewed
                               ? 'bg-brand-green text-white hover:bg-green-700'
                               : 'bg-surface-muted dark:bg-dark-border text-ink-faint dark:text-gray-500 cursor-not-allowed'
@@ -461,12 +461,12 @@ function GateCard({ gate, canApprove }) {
                   {/* Triggers info */}
                   <div className="grid grid-cols-2 gap-3 pt-1 border-t border-border dark:border-dark-border">
                     <div>
-                      <p className="text-[8px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-0.5">On Approve</p>
-                      <p className="text-[9px] text-brand-green leading-relaxed">{gate.onApprove}</p>
+                      <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-0.5">On Approve</p>
+                      <p className="text-[10px] text-brand-green leading-relaxed">{gate.onApprove}</p>
                     </div>
                     <div>
-                      <p className="text-[8px] font-semibold uppercase tracking-wider text-ink-faint dark:text-gray-500 mb-0.5">On Reject</p>
-                      <p className="text-[9px] text-amber-600 dark:text-amber-400 leading-relaxed">{gate.onReject}</p>
+                      <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-ink-faint dark:text-gray-500 mb-0.5">On Reject</p>
+                      <p className="text-[10px] text-amber-600 dark:text-amber-400 leading-relaxed">{gate.onReject}</p>
                     </div>
                   </div>
                 </div>
@@ -493,7 +493,7 @@ export default function GateManager() {
       {/* Gate timeline card */}
       <div className="card p-4">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-[10px] font-semibold text-ink dark:text-white uppercase tracking-wider">Pipeline Flow</p>
+          <p className="text-[10px] font-medium text-ink dark:text-white uppercase tracking-[0.08em]">Pipeline Flow</p>
           {activeGates.length > 0 && (
             <span className="badge bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
               {activeGates.length} gate{activeGates.length > 1 ? 's' : ''} awaiting action
@@ -511,13 +511,13 @@ export default function GateManager() {
       </div>
 
       {/* AI explainer */}
-      <div className="ai-panel rounded-[10px] p-3 flex items-start gap-2">
+      <div className="ai-panel rounded p-3 flex items-start gap-2">
         <div className="w-4 h-4 rounded bg-brand-green/20 flex items-center justify-center flex-shrink-0 mt-px">
-          <span className="text-brand-green text-[8px] font-bold">AI</span>
+          <span className="text-brand-green text-[8px] font-medium">AI</span>
         </div>
         <div>
-          <p className="text-[11px] font-medium text-brand-green-dark dark:text-green-400">How gate approvals work</p>
-          <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5 leading-relaxed max-w-3xl">
+          <p className="text-[12px] font-medium text-brand-green-dark dark:text-green-400">How gate approvals work</p>
+          <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5 leading-relaxed max-w-3xl">
             Each gate requires explicit human sign-off before the pipeline advances. Approving an individual asset marks it ready;
             approving the gate as a whole unlocks the next layer. Rejected assets return to the originating agent with your revision notes.
             SLA timers run in real time — overdue gates escalate to the AI COE team.

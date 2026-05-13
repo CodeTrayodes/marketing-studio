@@ -34,11 +34,11 @@ export function Sidebar({ mobileOpen, onClose }) {
       'flex flex-col bg-white dark:bg-dark-card border-r border-border/80 dark:border-dark-border',
       'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex-shrink-0 z-40',
       'fixed top-14 bottom-0 left-0 md:relative md:top-auto md:bottom-auto',
-      sidebarCollapsed ? 'w-14' : 'w-[220px]',
+      sidebarCollapsed ? 'w-12' : 'w-[176px]',
       mobileOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full md:translate-x-0',
     )}>
       <nav className="flex-1 overflow-y-auto scrollbar-thin py-4">
-        <div className="mx-3 mb-5">
+        <div className="px-2 mb-5">
           <RoleSwitcher collapsed={sidebarCollapsed} variant="sidebarTop" />
         </div>
 

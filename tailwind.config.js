@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Geist Sans', 'system-ui', 'sans-serif'],
-        mono: ['Geist Mono', 'monospace'],
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
       },
       colors: {
         brand: {
@@ -25,7 +25,7 @@ export default {
           strong: '#D1D5DB',
         },
         ink: {
-          DEFAULT: '#0A0A0A',
+          DEFAULT: '#111827',
           muted: '#6B7280',
           faint: '#9CA3AF',
         },
@@ -40,19 +40,20 @@ export default {
         },
         dark: {
           bg: '#0A0A0A',
-          card: '#1A1A1A',
-          border: '#2A2A2A',
-          'border-strong': '#3A3A3A',
+          card: '#141414',
+          border: '#242424',
+          'border-strong': '#333333',
         },
       },
       borderRadius: {
-        card: '12px',
-        btn: '8px',
-        badge: '6px',
+        card: '4px',
+        btn: '4px',
+        badge: '3px',
+        DEFAULT: '4px',
       },
       boxShadow: {
-        card: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
-        'card-hover': '0 4px 12px rgba(0,0,0,0.08)',
+        card: '0 1px 2px rgba(0,0,0,0.05)',
+        'card-hover': '0 3px 8px rgba(0,0,0,0.07)',
         'card-dark': '0 1px 3px rgba(0,0,0,0.4)',
       },
       animation: {

@@ -12,7 +12,7 @@ const FADE_UP = {
 const ROLE_ORDER = [ROLES.MARKETING_HEAD, ROLES.CAMPAIGN_LEAD, ROLES.CONTENT_EDITOR, ROLES.AI_COE];
 
 function SectionHeader({ children }) {
-  return <p className="text-[10px] font-semibold text-ink-faint dark:text-gray-500 uppercase tracking-widest mb-3">{children}</p>;
+  return <p className="text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-3">{children}</p>;
 }
 
 function RoleSwitcher() {
@@ -21,8 +21,8 @@ function RoleSwitcher() {
   return (
     <div className="card p-4 space-y-3">
       <div>
-        <p className="text-[11px] font-semibold text-ink dark:text-white">Active Role</p>
-        <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">
+        <p className="text-[13px] font-medium text-ink dark:text-white">Active Role</p>
+        <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5">
           Switching role changes visible data and navigation. No data is modified.
         </p>
       </div>
@@ -39,21 +39,21 @@ function RoleSwitcher() {
               animate="show"
               onClick={() => setRole(id)}
               className={cn(
-                'flex items-start gap-2.5 p-3 rounded-[8px] border text-left transition-all duration-200',
+                'flex items-start gap-2.5 p-3 rounded border text-left transition-all duration-200',
                 isActive
                   ? 'border-brand-green bg-brand-green-light dark:bg-green-900/20'
                   : 'border-border dark:border-dark-border bg-white dark:bg-dark-card hover:border-brand-green/30 hover:bg-surface-muted dark:hover:bg-dark-border'
               )}
             >
               <div className={cn(
-                'w-6 h-6 rounded-[5px] flex items-center justify-center flex-shrink-0 text-[9px] font-bold',
+                'w-6 h-6 rounded flex items-center justify-center flex-shrink-0 text-[10px] font-medium',
                 isActive ? 'bg-brand-green text-white' : 'bg-surface-muted dark:bg-dark-border text-ink-muted dark:text-gray-400'
               )}>
                 {config.avatar}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <p className={cn('text-[11px] font-semibold', isActive ? 'text-brand-green-dark dark:text-green-400' : 'text-ink dark:text-white')}>
+                  <p className={cn('text-[12px] font-medium', isActive ? 'text-brand-green-dark dark:text-green-400' : 'text-ink dark:text-white')}>
                     {config.label}
                   </p>
                   {isActive && <CheckCircle2 size={12} className="text-brand-green flex-shrink-0" />}
@@ -65,7 +65,7 @@ function RoleSwitcher() {
                     config.showTokenCosts && 'Token costs',
                     config.showAgentInternals && 'Agent internals',
                   ].filter(Boolean).map((cap) => (
-                    <span key={cap} className="text-[9px] bg-brand-green/10 text-brand-green-dark dark:text-green-400 px-1.5 py-px rounded">
+                    <span key={cap} className="text-[10px] bg-brand-green/10 text-brand-green-dark dark:text-green-400 px-1.5 py-px rounded">
                       {cap}
                     </span>
                   ))}
@@ -89,8 +89,8 @@ function ThemeSettings() {
   return (
     <div className="card p-4 space-y-3">
       <div>
-        <p className="text-[11px] font-semibold text-ink dark:text-white">Appearance</p>
-        <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">Choose your preferred colour scheme.</p>
+        <p className="text-[13px] font-medium text-ink dark:text-white">Appearance</p>
+        <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5">Choose your preferred colour scheme.</p>
       </div>
       <div className="flex gap-2">
         {options.map(({ value, label, icon: Icon, desc }) => {
@@ -100,7 +100,7 @@ function ThemeSettings() {
               key={value}
               onClick={() => setTheme(value)}
               className={cn(
-                'flex-1 flex items-center gap-2.5 p-3 rounded-[8px] border text-left transition-all duration-200',
+                'flex-1 flex items-center gap-2.5 p-3 rounded border text-left transition-all duration-200',
                 isActive
                   ? 'border-brand-green bg-brand-green-light dark:bg-green-900/20'
                   : 'border-border dark:border-dark-border bg-white dark:bg-dark-card hover:border-brand-green/30'
@@ -108,10 +108,10 @@ function ThemeSettings() {
             >
               <Icon size={14} className={isActive ? 'text-brand-green' : 'text-ink-muted dark:text-gray-400'} />
               <div>
-                <p className={cn('text-[11px] font-semibold', isActive ? 'text-brand-green-dark dark:text-green-400' : 'text-ink dark:text-white')}>
+                <p className={cn('text-[12px] font-medium', isActive ? 'text-brand-green-dark dark:text-green-400' : 'text-ink dark:text-white')}>
                   {label}
                 </p>
-                <p className="text-[10px] text-ink-muted dark:text-gray-400">{desc}</p>
+                <p className="text-[11px] text-ink-muted dark:text-gray-400">{desc}</p>
               </div>
               {isActive && <CheckCircle2 size={12} className="text-brand-green ml-auto flex-shrink-0" />}
             </button>
@@ -140,12 +140,12 @@ function SystemInfo() {
 
   return (
     <div className="card p-4 space-y-3">
-      <p className="text-[11px] font-semibold text-ink dark:text-white">Platform Status</p>
+      <p className="text-[13px] font-medium text-ink dark:text-white">Platform Status</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {stats.map(({ label, value, color }) => (
           <div key={label}>
-            <p className="text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider mb-0.5">{label}</p>
-            <p className={cn('text-[11px] font-semibold font-mono-nums', color)}>{value}</p>
+            <p className="text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-0.5">{label}</p>
+            <p className={cn('text-[12px] font-medium font-mono-nums', color)}>{value}</p>
           </div>
         ))}
       </div>
@@ -169,8 +169,8 @@ function PlatformInfo() {
   return (
     <div className="card p-4 space-y-3">
       <div>
-        <p className="text-[11px] font-semibold text-ink dark:text-white">Model Configuration</p>
-        <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">
+        <p className="text-[13px] font-medium text-ink dark:text-white">Model Configuration</p>
+        <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5">
           Each agent uses the Claude model best suited to its task complexity and latency requirements.
         </p>
       </div>
@@ -199,13 +199,13 @@ export default function SettingsPage() {
       <SystemInfo />
       {showInternals && <PlatformInfo />}
 
-      <div className="ai-panel rounded-[10px] p-3 flex items-start gap-2">
+      <div className="ai-panel rounded p-3 flex items-start gap-2">
         <div className="w-4 h-4 rounded bg-brand-green/20 flex items-center justify-center flex-shrink-0 mt-px">
-          <span className="text-brand-green text-[8px] font-bold">AI</span>
+          <span className="text-brand-green text-[8px] font-medium">AI</span>
         </div>
         <div>
-          <p className="text-[11px] font-medium text-brand-green-dark dark:text-green-400">LevelShift Pulse v2.4.1</p>
-          <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5 leading-relaxed">
+          <p className="text-[12px] font-medium text-brand-green-dark dark:text-green-400">LevelShift Pulse v2.4.1</p>
+          <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5 leading-relaxed">
             AI Content Operations Platform. 13 agents · 4 layers · 310 assets per quarter · 5 Business Units.
             Built on Claude Opus 4.7, Sonnet 4.6, and Haiku 4.5. All production data is simulated for demonstration.
           </p>

@@ -18,15 +18,15 @@ const FADE_UP = {
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 
 function SectionHeader({ children }) {
-  return <p className="text-[10px] font-semibold text-ink-faint dark:text-gray-500 uppercase tracking-widest mb-3">{children}</p>;
+  return <p className="text-[10px] font-medium text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-3">{children}</p>;
 }
 
 function MetricTile({ label, value, sub, accent, explanation, i = 0 }) {
   return (
     <motion.div custom={i} variants={FADE_UP} initial="hidden" animate="show" className="card p-4">
-      <p className="text-[10px] font-medium text-ink-muted dark:text-gray-400 uppercase tracking-wider leading-none mb-2">{label}</p>
+      <p className="text-[10px] font-medium text-ink-muted dark:text-gray-400 uppercase tracking-[0.08em] leading-none mb-2">{label}</p>
       <div className="flex items-baseline gap-1">
-        <span className={cn('text-lg font-semibold font-mono-nums', accent ? 'text-brand-green' : 'text-ink dark:text-white')}>{value}</span>
+        <span className={cn('text-[20px] font-medium font-mono-nums', accent ? 'text-brand-green' : 'text-ink dark:text-white')}>{value}</span>
         {sub && <span className="text-[10px] text-ink-muted dark:text-gray-400">{sub}</span>}
       </div>
       {explanation && <p className="text-[9px] text-ink-faint dark:text-gray-500 mt-1.5 leading-relaxed">{explanation}</p>}
@@ -53,8 +53,8 @@ function ROIHeroCard() {
   return (
     <div className="roi-hero">
       <div className="flex-1 min-w-0">
-        <p className="text-[9px] font-semibold uppercase tracking-widest text-green-700 dark:text-green-400 mb-1">Agency Cost Avoided This Quarter</p>
-        <p className="text-[32px] font-bold text-brand-green leading-none font-mono-nums">{formatCurrency(laborVal)}</p>
+        <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-green-700 dark:text-green-400 mb-1">Agency Cost Avoided This Quarter</p>
+        <p className="text-[32px] font-medium text-brand-green leading-none font-mono-nums">{formatCurrency(laborVal)}</p>
         <p className="text-[11px] text-ink-muted dark:text-green-200/70 mt-3 leading-relaxed max-w-xl">
           Your AI content system spent{' '}
           <strong className="text-ink dark:text-green-100">{formatCurrency(computeCost)}</strong> in compute this quarter.
@@ -63,8 +63,8 @@ function ROIHeroCard() {
         </p>
       </div>
       <div className="flex flex-col items-center flex-shrink-0 pr-2">
-        <p className="text-[48px] font-bold text-brand-green leading-none font-mono-nums">{roiMult}×</p>
-        <p className="text-[9px] font-semibold text-green-700 dark:text-green-400 mt-1 text-center uppercase tracking-wider">ROI Multiple</p>
+        <p className="text-[48px] font-medium text-brand-green leading-none font-mono-nums">{roiMult}×</p>
+        <p className="text-[10px] font-medium text-green-700 dark:text-green-400 mt-1 text-center uppercase tracking-[0.08em]">ROI Multiple</p>
       </div>
     </div>
   );
@@ -127,7 +127,7 @@ function ProjectionCard() {
   return (
     <div className="card p-4">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[11px] font-semibold text-ink dark:text-white">Quarterly Projection</p>
+        <p className="text-[13px] font-medium text-ink dark:text-white">Quarterly Projection</p>
         <span className="text-[9px] text-ink-faint dark:text-gray-500">at current {pace} assets/week pace</span>
       </div>
       <div className="grid grid-cols-3 gap-6">
@@ -137,9 +137,9 @@ function ProjectionCard() {
           { label: 'Projected Annual Saving', value: formatCurrency(annualSaving), note: '4 quarters at this rate' },
         ].map(({ label, value, note }) => (
           <div key={label}>
-            <p className="text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider mb-0.5">{label}</p>
-            <p className="text-[18px] font-semibold font-mono-nums text-ink dark:text-white">{value}</p>
-            <p className="text-[9px] text-ink-faint dark:text-gray-500 mt-0.5">{note}</p>
+            <p className="text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] mb-0.5">{label}</p>
+            <p className="text-[18px] font-medium font-mono-nums text-ink dark:text-white">{value}</p>
+            <p className="text-[10px] text-ink-faint dark:text-gray-500 mt-0.5">{note}</p>
           </div>
         ))}
       </div>
@@ -161,14 +161,14 @@ function ContentPerformanceTable() {
       <SectionHeader>Content Performance</SectionHeader>
       <div className="card overflow-hidden">
         <div className="px-4 py-3 border-b border-border dark:border-dark-border">
-          <p className="text-[11px] font-semibold text-ink dark:text-white">Published Assets</p>
+          <p className="text-[13px] font-medium text-ink dark:text-white">Published Assets</p>
           <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">Quality and GEO scores are available for all published content. Attribution data connects after Salesforce and GA4 integration in Phase 2.</p>
         </div>
         <table className="w-full">
           <thead className="bg-surface-muted dark:bg-dark-card">
             <tr>
               {['Title', 'Type', 'Published', 'Quality', 'GEO Score', 'Status'].map(h => (
-                <th key={h} className="text-left px-3 py-2 text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider font-medium whitespace-nowrap">{h}</th>
+                <th key={h} className="text-left px-3 py-2 text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] font-medium whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
@@ -183,7 +183,7 @@ function ContentPerformanceTable() {
                   {asset.publishedAt ? timeAgo(asset.publishedAt) : '—'}
                 </td>
                 <td className="px-3 py-2">
-                  <span className={cn('text-[9px] font-mono font-semibold', qualityColor(asset.qualityScores?.overall ?? 0))}>
+                  <span className={cn('text-[10px] font-mono font-medium', qualityColor(asset.qualityScores?.overall ?? 0))}>
                     {asset.qualityScores?.overall ?? '—'}
                   </span>
                 </td>
@@ -192,7 +192,7 @@ function ContentPerformanceTable() {
                     <div className="w-10 h-px bg-border dark:bg-dark-border rounded-full overflow-hidden">
                       <div className="h-full rounded-full bg-blue-500" style={{ width: `${asset.qualityScores?.geo ?? 0}%` }} />
                     </div>
-                    <span className="text-[9px] font-mono text-blue-600 dark:text-blue-400">{asset.qualityScores?.geo ?? '—'}</span>
+                    <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400">{asset.qualityScores?.geo ?? '—'}</span>
                   </div>
                 </td>
                 <td className="px-3 py-2">
@@ -239,7 +239,7 @@ function WhyGEOCard() {
           <div className="w-4 h-4 rounded bg-brand-green/20 flex items-center justify-center flex-shrink-0">
             <span className="text-brand-green text-[8px] font-bold">AI</span>
           </div>
-          <p className="text-[11px] font-semibold text-ink dark:text-white">Why GEO matters for enterprise content</p>
+          <p className="text-[12px] font-medium text-ink dark:text-white">Why GEO matters for enterprise content</p>
         </div>
         {open ? <ChevronUp size={12} className="text-ink-muted" /> : <ChevronDown size={12} className="text-ink-muted" />}
       </button>
@@ -347,13 +347,13 @@ function OutputSection() {
 
       <div className="card overflow-hidden">
         <div className="px-4 py-3 border-b border-border dark:border-dark-border">
-          <p className="text-[11px] font-semibold text-ink dark:text-white">Performance by Business Unit</p>
+          <p className="text-[13px] font-medium text-ink dark:text-white">Performance by Business Unit</p>
         </div>
         <table className="w-full">
           <thead className="bg-surface-muted dark:bg-dark-card">
             <tr>
               {['Business Unit', 'Published', 'Completion', 'Quality', 'Pipeline £', 'Sessions', 'Email Open'].map(h => (
-                <th key={h} className="text-left px-3 py-2 text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider font-medium whitespace-nowrap">{h}</th>
+                <th key={h} className="text-left px-3 py-2 text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] font-medium whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
@@ -372,7 +372,7 @@ function OutputSection() {
                   </div>
                 </td>
                 <td className="px-3 py-2">
-                  <span className={cn('text-[10px] font-mono-nums font-semibold', qualityColor(bu.qualityAvg))}>{bu.qualityAvg}</span>
+                  <span className={cn('text-[10px] font-mono-nums font-medium', qualityColor(bu.qualityAvg))}>{bu.qualityAvg}</span>
                 </td>
                 <td className="px-3 py-2 text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{formatCurrency(bu.pipelineInfluence)}</td>
                 <td className="px-3 py-2 text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{bu.organicSessions.toLocaleString()}</td>
@@ -394,14 +394,14 @@ function ROIBreakdownSection() {
       <SectionHeader>Labour Value Breakdown</SectionHeader>
       <div className="card overflow-hidden">
         <div className="px-4 py-3 border-b border-border dark:border-dark-border">
-          <p className="text-[11px] font-semibold text-ink dark:text-white">Equivalent Human Production Cost</p>
-          <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5">At market rates for each content role</p>
+          <p className="text-[13px] font-medium text-ink dark:text-white">Equivalent Human Production Cost</p>
+          <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5">At market rates for each content role</p>
         </div>
         <table className="w-full">
           <thead className="bg-surface-muted dark:bg-dark-card">
             <tr>
               {['Role', 'Rate/h', 'Hrs/Asset', 'Assets', 'Total Hrs', 'Value'].map(h => (
-                <th key={h} className="text-left px-3 py-2 text-[9px] text-ink-faint dark:text-gray-500 uppercase tracking-wider font-medium whitespace-nowrap">{h}</th>
+                <th key={h} className="text-left px-3 py-2 text-[10px] text-ink-faint dark:text-gray-500 uppercase tracking-[0.08em] font-medium whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
@@ -417,11 +417,11 @@ function ROIBreakdownSection() {
               </tr>
             ))}
             <tr className="bg-surface-muted dark:bg-dark-card border-t-2 border-border dark:border-dark-border">
-              <td className="px-3 py-2 text-[10px] font-semibold text-ink dark:text-white" colSpan={4}>Total</td>
-              <td className="px-3 py-2 text-[10px] font-mono-nums font-semibold text-ink dark:text-white">
+              <td className="px-3 py-2 text-[11px] font-medium text-ink dark:text-white" colSpan={4}>Total</td>
+              <td className="px-3 py-2 text-[10px] font-mono-nums font-medium text-ink dark:text-white">
                 {LABOUR_VALUE_BREAKDOWN.reduce((s, r) => s + r.totalHours, 0).toLocaleString()}
               </td>
-              <td className="px-3 py-2 text-[11px] font-mono-nums font-bold text-brand-green">
+              <td className="px-3 py-2 text-[12px] font-mono-nums font-medium text-brand-green">
                 {formatCurrency(QUARTERLY_METRICS.laborValueSaved)}
               </td>
             </tr>
@@ -463,13 +463,13 @@ export default function PerformancePage() {
       {showROI && <ROIBreakdownSection />}
 
       {/* AI explainer */}
-      <div className="ai-panel rounded-[10px] p-3 flex items-start gap-2">
+      <div className="ai-panel rounded p-3 flex items-start gap-2">
         <div className="w-4 h-4 rounded bg-brand-green/20 flex items-center justify-center flex-shrink-0 mt-px">
-          <span className="text-brand-green text-[8px] font-bold">AI</span>
+          <span className="text-brand-green text-[8px] font-medium">AI</span>
         </div>
         <div>
-          <p className="text-[11px] font-medium text-brand-green-dark dark:text-green-400">How performance data is collected</p>
-          <p className="text-[10px] text-ink-muted dark:text-gray-400 mt-0.5 leading-relaxed max-w-3xl">
+          <p className="text-[12px] font-medium text-brand-green-dark dark:text-green-400">How performance data is collected</p>
+          <p className="text-[11px] text-ink-muted dark:text-gray-400 mt-0.5 leading-relaxed max-w-3xl">
             The Performance Agent (Layer 4) runs continuously, pulling data from GA4, HubSpot, Pardot, LinkedIn API, and Salesforce.
             Reports are generated weekly and fed into the Optimisation Agent, which updates Layer 1 inputs for next quarter.
             ROI calculations use actual agent output counts versus equivalent human production costs at market blended rates.

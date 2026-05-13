@@ -176,7 +176,7 @@ function ContentPerformanceTable() {
             {published.map(asset => (
               <tr key={asset.id} className="hover:bg-surface-muted dark:hover:bg-dark-card/40">
                 <td className="px-3 py-2">
-                  <p className="text-[10px] font-medium text-ink dark:text-white max-w-[280px] truncate">{asset.title}</p>
+                  <p className="text-[12px] text-ink dark:text-white max-w-[280px] truncate">{asset.title}</p>
                 </td>
                 <td className="px-3 py-2 text-[9px] text-ink-muted dark:text-gray-400 whitespace-nowrap">{asset.typeName}</td>
                 <td className="px-3 py-2 text-[9px] text-ink-faint dark:text-gray-500 whitespace-nowrap">
@@ -361,7 +361,7 @@ function OutputSection() {
             {BU_PERFORMANCE.map((bu, i) => (
               <motion.tr key={bu.buId} custom={i} variants={FADE_UP} initial="hidden" animate="show"
                 className="hover:bg-surface-muted dark:hover:bg-dark-card/40">
-                <td className="px-3 py-2 text-[10px] font-medium text-ink dark:text-white">{bu.buName}</td>
+                <td className="px-3 py-2 text-[12px] text-ink dark:text-white">{bu.buName}</td>
                 <td className="px-3 py-2 text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{bu.assetsPublished}/{bu.assetsTarget}</td>
                 <td className="px-3 py-2">
                   <div className="flex items-center gap-1.5">
@@ -408,7 +408,7 @@ function ROIBreakdownSection() {
           <tbody className="divide-y divide-border dark:divide-dark-border">
             {LABOUR_VALUE_BREAKDOWN.map(row => (
               <tr key={row.role} className="hover:bg-surface-muted dark:hover:bg-dark-card/40">
-                <td className="px-3 py-2 text-[10px] font-medium text-ink dark:text-white">{row.role}</td>
+                <td className="px-3 py-2 text-[12px] text-ink dark:text-white">{row.role}</td>
                 <td className="px-3 py-2 text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">£{row.rate}</td>
                 <td className="px-3 py-2 text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{row.hoursPerAsset}</td>
                 <td className="px-3 py-2 text-[10px] font-mono-nums text-ink-muted dark:text-gray-400">{row.assetCount}</td>

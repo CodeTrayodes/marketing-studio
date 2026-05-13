@@ -57,6 +57,59 @@ export const useContentStore = create((set, get) => ({
   reviseAsset: (id, note) =>
     set(s => ({ assets: s.assets.map(a => a.id === id ? { ...a, status: 'draft', revisionNote: note } : a) })),
 
+  advanceAsset: (id) =>
+    set(s => ({
+      assets: s.assets.map(a => {
+        if (a.id !== id) return a;
+        const next = {
+          'qa-review': 'gate-2-pending',
+          'gate-2-pending': 'gate-3-pending',
+          'gate-3-pending': 'approved',
+          'draft': 'qa-review',
+        }[a.status] ?? a.status;
+        return { ...a, status: next };
+      }),
+    })),
+
+  publishAsset: (id) =>
+    set(s => ({
+      assets: s.assets.map(a =>
+        a.id === id ? { ...a, status: 'published', publishedAt: new Date() } : a
+      ),
+    })),
+
+  flagAsset: (id) =>
+    set(s => ({
+      assets: s.assets.map(a =>
+        a.id === id ? { ...a, flagged: !a.flagged } : a
+      ),
+    })),
+
+  createAsset: (data) => {
+    const id = `asset-custom-${Date.now()}`;
+    const agent = s => s; // no-op, used below
+    const newAsset = {
+      id,
+      title: data.title,
+      type: data.type,
+      typeName: data.typeName,
+      buId: data.buId,
+      buName: data.buName,
+      buAbbr: data.buAbbr,
+      agent: data.agentId,
+      agentName: data.agentName,
+      channel: data.channel || 'Content Hub',
+      status: 'draft',
+      qualityScores: null,
+      createdAt: new Date(),
+      publishedAt: null,
+      wordCount: null,
+      preview: data.brief || null,
+    };
+    set(s => ({ assets: [newAsset, ...s.assets] }));
+    return id;
+  },
+
   getStats: () => {
     const assets = get().assets;
     return {
